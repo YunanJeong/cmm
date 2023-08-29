@@ -4,7 +4,7 @@
 
 일단 bitnami/grafana로 시작
 
-## 설치
+## grafana 설치
 
 ```sh
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -16,4 +16,13 @@ kubectl port-forward svc/my-grafana 8080:3000 &
 
 # not found socat 발생시
 sudo apt install -y socat
+```
+
+## prometheus 설치
+
+```sh
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install my-prometheus bitnami/prometheus
+
+
 ```
