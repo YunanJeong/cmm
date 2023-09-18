@@ -72,8 +72,6 @@ grafana:
     ##
     extraRules: []
 
-
-
 prometheus:
   enabled: true
   prometheus:
