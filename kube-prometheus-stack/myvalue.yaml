@@ -87,17 +87,26 @@ prometheus-node-exporter:
 
 
 
+
+# --set kube-prometheus-stack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.metadata.name=data
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        metadata:
+          name: data
+
 grafana:
   enabled: true
   namespaceOverride: ""
 
   ## ForceDeployDatasources Create datasource configmap even if grafana deployment has been disabled
   ##
-  forceDeployDatasources: false
+  forceDeployDatasources: true
 
   ## ForceDeployDashboard Create dashboard configmap even if grafana deployment has been disabled
   ##
-  forceDeployDashboards: false
+  forceDeployDashboards: true
 
   ## Deploy default dashboards
   ##
