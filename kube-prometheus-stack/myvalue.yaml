@@ -6,7 +6,7 @@ nodeExporter:
     linux:
       enabled: true
     darwin:
-      enabled: true
+      enabled: false
 
 ## Configuration for prometheus-node-exporter subchart
 ##
@@ -89,12 +89,12 @@ prometheus-node-exporter:
 
 
 # --set kube-prometheus-stack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.metadata.name=data
-prometheus:
-  prometheusSpec:
-    storageSpec:
-      volumeClaimTemplate:
-        metadata:
-          name: data
+# prometheus:
+#   prometheusSpec:
+#     storageSpec:
+#       volumeClaimTemplate:
+#         metadata:
+#           name: data
 
 grafana:
   enabled: true

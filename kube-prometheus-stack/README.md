@@ -6,16 +6,26 @@
 - grafana에서 출시한 k8s-monitoring 차트도 있는데, 천 라인쯤 됨
   - 모는 기능을 커스텀할 게 아니라면 차라리 따로따로 되있는걸 커스텀으로 합치는게 더 편할 것 같기도..
   - 일단 좀 봐야 알겠다.
-  
+
 - 구 차트이름이 prometheus-opeator였으나, 변경됨. 현재는 일부 구성 요소를 prometheus-operator라고 부름
 
 ```sh
 # Add Repo
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-# 설치
-helm install my-kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 54.2.2
+# 기본 설치
+helm install prostack prometheus-community/kube-prometheus-stack --version 54.2.2
+# value 포함 후 monitor ns에설치
+helm install prostack prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f myvalue.yaml
 
 
 
 
+```
+
+## 주의
+
+WSL에서 configmap을 읽지 못하는 버그가 있음.
+
+```sh
+"MountVolume.SetUp failed for volume ...
 ```
