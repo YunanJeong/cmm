@@ -18,7 +18,11 @@ helm install prostack prometheus-community/kube-prometheus-stack --version 54.2.
 helm install prostack prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f myvalue.yaml
 
 # 테스트용 앱
-
+helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/skafka-2.0.3.tgz \
+-f https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/kraft-multi.yaml \
+--set "kafka.externalAccess.autoDiscovery.enabled=false" \
+--set "kafka.externalAccess.controller.service.nodePorts={30003,30004,30005}"
+--set "kafka.metrics.jmx.enabled=true"
 
 ```
 
