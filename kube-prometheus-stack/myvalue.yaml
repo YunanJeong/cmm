@@ -20,7 +20,13 @@ prometheus:
           - targets:
             - test-kafka-metrics:9308
       # 단일 클러스터, kafka-jmx
-
+      - job_name: kafka-jmx
+        scrape_interval: 10s
+        scrape_timeout:  5s
+        metrics_path: "/"
+        static_configs:
+          - targets:
+            - test-kafka-metrics:9308
       # 멀티(외부) 클러스터
       # - job_name: zookeeper
       #   scrape_interval: 10s

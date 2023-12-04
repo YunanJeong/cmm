@@ -16,6 +16,8 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm install prostack prometheus-community/kube-prometheus-stack --version 54.2.2
 # value 포함 후 monitor ns에설치
 helm install prostack prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f myvalue.yaml
+# 업글
+helm upgrade prostack prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f myvalue.yaml
 
 # jmx, kafka exporter 테스트용 앱
 helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/skafka-2.0.3.tgz \
