@@ -32,14 +32,16 @@ helm upgrade test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 --set "kafka.externalAccess.controller.service.nodePorts={30003,30004,30005}" \
 --set "kafka.metrics.kafka.enabled=true" \
 --set "kafka.metrics.jmx.enabled=true" \
---set "kafka.metrics.serviceMonitor.enabled=true"\
+--set "kafka.metrics.serviceMonitor.enabled=true" \
 --set "kafka.metrics.serviceMonitor.namespace=monitor"
 
 ```
 
 ## 주의
 
-WSL에서 configmap을 읽지 못하는 버그가 있음.
+- WSL에서 configmap을 읽지 못하는 버그가 있음.
+
+- EC2에서는 정상실행되나, 껐다 켰다 반복시 grafana Pod에서 동일한 failed Event 발생
 
 ```sh
 "MountVolume.SetUp failed for volume ...
