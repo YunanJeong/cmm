@@ -8,6 +8,28 @@ nodeExporter:
     darwin:
       enabled: false
 
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+      # 단일 클러스터, kafka-exporter
+      - job_name: kafka-metrics
+        scrape_interval: 10s
+        scrape_timeout:  5s
+        metrics_path: "/metrics"
+        static_configs:
+          - targets:
+            - test-kafka:9308
+      # 단일 클러스터, kafka-jmx
+
+      # 멀티(외부) 클러스터
+      # - job_name: zookeeper
+      #   scrape_interval: 10s
+      #   scrape_timeout:  5s
+      #   metrics_path: "/metrics"
+      #   static_configs:
+      #   - targets:
+      #     - apk-zookeeper-metrics:9141
+
 ## Configuration for prometheus-node-exporter subchart
 ##
 prometheus-node-exporter:
