@@ -19,10 +19,6 @@ nodeExporter:
 
 prometheus:
   prometheusSpec:
-    storageSpec:
-      volumeClaimTemplate:
-        metadata:
-          name: data
     additionalScrapeConfigs:
       # 단일 클러스터, kafka-exporter
       - job_name: kafka-metrics
@@ -265,7 +261,7 @@ grafana:
     # If true, a ServiceMonitor CRD is created for a prometheus operator
     # https://github.com/coreos/prometheus-operator
     #
-    enabled: true
+    enabled: false
 
     # Path to use for scraping metrics. Might be different if server.root_url is set
     # in grafana.ini
