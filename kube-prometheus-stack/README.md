@@ -37,6 +37,18 @@ helm upgrade test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 
 ```
 
+## 메모
+
+- export-promethues-grafana를 하나의 stack으로 취급하여 배포하는 헬름차트들이 여러 개 있음
+- 대부분, 한 클러스터 안에서 사용하는 것을 가정하여 만들어짐
+- 멀티클러스터에 대해 Centralized 모니터링을 하려면 수정이 필요
+- prometheus를 각 서비스에 둘 것인가, 중앙에 둘 것인가.
+  - 서비스에 두면 메모리 부담, 중앙에두면 더 복잡한 설정 필요
+- 다른 Centralized 모니터링 예시들이 있음
+  - 보통은 각 서비스, 각 클러스터에 prometheus를 배치시키고, 중앙에는 Thanos라는 툴을 둠
+  - prometheus는 클러스터링을 지원하지않는데, 여러 promethues를 하나의 앱처럼 관리하기 위한 툴이 Thanos임
+
+
 ## 주의
 
 - WSL에서 configmap을 읽지 못하는 버그가 있음.
