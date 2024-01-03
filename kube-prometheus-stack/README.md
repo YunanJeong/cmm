@@ -24,9 +24,10 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 -f https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/kraft-multi.yaml \
 --set "kafka.externalAccess.autoDiscovery.enabled=false" \
 --set "kafka.externalAccess.controller.service.nodePorts={30003,30004,30005}" \
+--set "kafka.metrics.kafka.enabled=true" \
 --set "kafka.metrics.jmx.enabled=true"
 
-helm upgrade test https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/skafka-2.0.3.tgz \
+helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/skafka-2.0.3.tgz \
 -f https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/kraft-multi.yaml \
 --set "kafka.externalAccess.autoDiscovery.enabled=false" \
 --set "kafka.externalAccess.controller.service.nodePorts={30003,30004,30005}" \

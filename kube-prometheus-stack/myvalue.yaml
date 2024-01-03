@@ -19,23 +19,24 @@ nodeExporter:
 
 prometheus:
   prometheusSpec:
-    additionalScrapeConfigs:
+    externalUrl: "promethues.test.wai"
+    additionalScrapeConfigs: 
       # 단일 클러스터, kafka-exporter
       - job_name: kafka-metrics
         scrape_interval: 10s
         scrape_timeout:  5s
-        metrics_path: "/metrics"
+        metrics_path: "/metrics"  # exporter 설정에서 정해진대로 써준다.
         static_configs:
           - targets:
-            - test-kafka-metrics:9308
+            - test-kafka-metrics.default.svc.cluster.local:9308
       # 단일 클러스터, kafka-jmx
       - job_name: kafka-jmx
         scrape_interval: 10s
         scrape_timeout:  5s
-        metrics_path: "/"
+        metrics_path: "/"         # exporter 설정에서 정해진대로 써준다.
         static_configs:
           - targets:
-            - test-kafka-jmx-metrics:5556
+            - test-kafka-jmx-metrics.default.svc.cluster.local:5556
       # 멀티(외부) 클러스터
       # - job_name: zookeeper
       #   scrape_interval: 10s
