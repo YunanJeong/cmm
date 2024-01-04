@@ -18,8 +18,11 @@ nodeExporter:
 #           name: data
 
 prometheus:
+  service:
+    type: LoadBalancer
   prometheusSpec:
     externalUrl: "promethues.test.wai"
+    retention: 10d
     additionalScrapeConfigs: 
       # 단일 클러스터, kafka-exporter
       - job_name: kafka-metrics
