@@ -65,6 +65,10 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 ## Service Monitor
 
 - prometheus-opreator에서 제공하는 CRD
-- Prometheus가 Kubernetes 서비스를 자동으로 발견하고, 이 서비스들이 노출하는 메트릭을 수집할 수 있게 합니다.
+- Service Monitor는 Prometheus가 Kubernetes 서비스를 자동으로 발견하고, 이 서비스들이 노출하는 메트릭을 수집할 수 있게 해준다.
+- 원래 Prometheus에서 읽을 exporter정보를 `prometheus.yaml`(`prometheusSpec`)에 수동설정해야 하는데 Service Monitor를 통해 이를 자동화해준다.
+- Service Monitor는 모니터링 대상 서비스에서 on-off하는 옵션이다.
+  - 단, Service Monitor는 단일 K8s 클러스터 내에서 동작하는 것을 목적으로 만들어졌기 때문에, 원격 환경에선 적합하지 않다.
 - 이 헬름 차트 외에도 prometheus 관련 기능을 제공하는 차트에서 Service Monitor 옵션이 종종 등장한다.
 - 다시 읽어보기: [Service Monitor 컨셉, 쓰는 이유, 장점](https://jerryljh.medium.com/prometheus-servicemonitor-98ccca35a13e)
+
