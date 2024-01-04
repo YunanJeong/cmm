@@ -61,3 +61,10 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 ```sh
 "MountVolume.SetUp failed for volume ...
 ```
+
+## Service Monitor
+
+- prometheus-opreator에서 제공하는 CRD
+- Prometheus가 Kubernetes 서비스를 자동으로 발견하고, 이 서비스들이 노출하는 메트릭을 수집할 수 있게 합니다.
+- 이 헬름 차트 외에도 prometheus 관련 기능을 제공하는 차트에서 Service Monitor 옵션이 종종 등장한다.
+- 다시 읽어보기: [Service Monitor 컨셉, 쓰는 이유, 장점](https://jerryljh.medium.com/prometheus-servicemonitor-98ccca35a13e)
