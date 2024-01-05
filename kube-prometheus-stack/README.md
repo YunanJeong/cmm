@@ -19,6 +19,9 @@ helm install prostack prometheus-community/kube-prometheus-stack --version 54.2.
 # 업글
 helm upgrade prostack prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f myvalue.yaml
 
+# grafana only
+helm install grafana prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f grafana.yaml
+
 # jmx, kafka exporter 테스트용 앱
 helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/skafka-2.0.3.tgz \
 -f https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/kraft-multi.yaml \

@@ -48,6 +48,19 @@ prometheus:
       #   static_configs:
       #   - targets:
       #     - apk-zookeeper-metrics:9141
+  ingress:
+    enabled: false
+    # ingressClassName: nginx
+    annotations: {}
+    labels: {}
+    # servicePort: 8081
+    hosts: []
+    #   - prometheus.domain.com
+    paths: []
+    # - /
+    # pathType: ImplementationSpecific
+    tls: []
+
 
 ## Configuration for prometheus-node-exporter subchart
 ##
