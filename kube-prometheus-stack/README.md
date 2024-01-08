@@ -75,3 +75,8 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 - 이 헬름 차트 외에도 prometheus 관련 기능을 제공하는 차트에서 Service Monitor 옵션이 종종 등장한다.
 - 다시 읽어보기: [Service Monitor 컨셉, 쓰는 이유, 장점](https://jerryljh.medium.com/prometheus-servicemonitor-98ccca35a13e)
 
+## Sidecar
+
+- 메인컨테이너와 함께 동작하는 보조컨테이너(helper container)를 의미
+- 메인컨테이너 앱의 주 기능 외에 로그처리, 모니터링, 보안, 프록시, 파일 시스템 관리 등의 용도로 사용
+- 디커플링, 재사용성, 유지보수성에 유리
