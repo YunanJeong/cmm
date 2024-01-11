@@ -60,18 +60,18 @@ grafana:
       annotations: {}
       multicluster:
         global:
-          enabled: false  # ?????????????????????????????
+          enabled: true  # default: false ?????????????????????????????
         etcd:
-          enabled: false  # ?????????????????????????????
+          enabled: true  # default: false ?????????????????????????????
       provider:
-        allowUiUpdates: false
+        allowUiUpdates: true
     
     datasources:
-      enabled: false
-      defaultDatasourceEnabled: true
-      isDefaultDatasource: true
+      enabled: true
+      defaultDatasourceEnabled: false  # 기본 Data Source 생성 (grafana와 동일 cluster에서, 동일 helm release로 생성된 Prometheus 주소를 참조)
+      isDefaultDatasource: false       # 
 
-      uid: prometheus
+      uid: prometheuswegwegwegw what is uid??????????????????
 
       ## URL of prometheus datasource
       ##
@@ -121,7 +121,21 @@ grafana:
 
   ## Configure additional grafana datasources (passed through tpl)
   ## ref: http://docs.grafana.org/administration/provisioning/#datasources
-  additionalDataSources: []
+  # grafana.sidecar.datasources.enabled=true 필요
+  additionalDataSources:  # []     
+  - name: prometheus-sample
+    access: proxy
+    basicAuth: true
+    basicAuthPassword: pass
+    basicAuthUser: daco
+    editable: false
+    jsonData:
+        tlsSkipVerify: true
+    orgId: 1
+    type: prometheus
+    url: http://172.31.24.115:9090  # http https 구분해서 반드시 기입 필요
+    version: 1
+
   # - name: prometheus-sample
   #   access: proxy
   #   basicAuth: true
