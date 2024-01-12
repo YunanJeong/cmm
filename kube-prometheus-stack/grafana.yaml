@@ -52,11 +52,11 @@ grafana:
     dashboards:                 # 대시보드 사전 설정하기 (grafana-sc-dashboard)
       enabled: true               # true시, kube-prometheus-stack의 기본제공 대시보드 or 커스텀 대시보드를 활성화
       
-      label: grafana_dashboard  # 커스텀 대시보드 설정하기 (별도 configmap 생성 필요)
+      label: grafana_dashboard    # 커스텀 대시보드 사전 설정하기 (별도 configmap 생성 필요)
       labelValue: "1"             # configmap 매니페스트에서,
                                     # metadata.labels 섹션에 label-labelValue와 동일한 key-value를 입력
                                     # data섹션에 대시보드 설정json을 입력
-                                  # 이후 configmap 실행시 대시보드가 배포된다. (오류시 sidecar만 재실행)
+                                  # 이후 configmap 배포시 대시보드가 배포된다. (오류시 sidecar만 재실행)
                                   # configmap은 helm template이나 kubectl로 배포하면 된다.
 
       # Allow discovery in all namespaces for dashboards
@@ -79,7 +79,8 @@ grafana:
       defaultDatasourceEnabled: false  # 기본 Data Source 생성 (grafana와 동일 cluster에서, 동일 helm release로 생성된 Prometheus 주소를 참조)
       isDefaultDatasource: false       # 
 
-      uid: prometheuswegwegwegw what is uid??????????????????
+      uid: prometheus                  # 대시보드의 UID(고유 식별자)는 여러 Grafana 설치 간에 대시보드를 고유하게 식별하는 데 사용될 수 있습니다.
+                                       # UID를 사용하면 대시보드에 액세스하기 위한 일관된 URL을 가질 수 있으므로 대시보드 제목을 변경해도 해당 대시보드에 대한 북마크 링크가 끊어지지 않습니다.
 
       ## URL of prometheus datasource
       ##
