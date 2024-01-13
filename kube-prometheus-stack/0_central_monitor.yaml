@@ -144,7 +144,18 @@ grafana:
     type: prometheus
     url: http://172.31.24.115:9090  # http https 구분해서 반드시 기입 필요
     version: 1
-
+  - name: kr-mum-prometheus
+    access: proxy
+    basicAuth: true
+    basicAuthPassword: pass
+    basicAuthUser: user
+    editable: false
+    jsonData:
+        tlsSkipVerify: true
+    orgId: 1
+    type: prometheus
+    url: http://172.31.4.123:9090  # http https 구분해서 반드시 기입 필요
+    version: 1
   # - name: prometheus-sample
   #   access: proxy
   #   basicAuth: true
