@@ -23,6 +23,14 @@ helm upgrade prostack prometheus-community/kube-prometheus-stack --version 54.2.
 helm install grafana prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f grafana.yaml
 helm upgrade grafana prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f grafana.yaml
 
+# each cluster  (nodeSelector 설정 포함)
+helm install monitor prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f each_cluster.yaml \
+--set "prometheus.prometheusSpec.nodeSelector=kr-mum/noderole=kafka" \
+--set "prometheusOperator.nodeSelector=kr-mum/noderole=kafka"
+
+
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f each_cluster.yaml
+
 # jmx, kafka exporter 테스트용 앱
 helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/skafka-2.0.3.tgz \
 -f https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/kraft-multi.yaml \
