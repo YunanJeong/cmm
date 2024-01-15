@@ -15,13 +15,13 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 # 기본 설치
 helm install prostack prometheus-community/kube-prometheus-stack --version 54.2.2
 # value 포함 후 monitor ns에설치
-helm install prostack prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f myvalue.yaml
+helm install prostack prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f single_cluster.yaml
 # 업글
-helm upgrade prostack prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f myvalue.yaml
+helm upgrade prostack prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f single_cluster.yaml
 
 # grafana only
-helm install grafana prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f grafana.yaml
-helm upgrade grafana prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f grafana.yaml
+helm install monitor prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f central_monitor.yaml
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f central_monitor.yaml
 
 # each cluster  (nodeSelector 설정 포함)
 helm install monitor prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f each_cluster.yaml \
@@ -30,8 +30,6 @@ helm install monitor prometheus-community/kube-prometheus-stack --version 54.2.2
 helm upgrade monitor prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f each_cluster.yaml \
 --set "prometheus.prometheusSpec.nodeSelector.kr-mum/noderole=kafka" \
 --set "prometheusOperator.nodeSelector.kr-mum/noderole=kafka"
-
-helm upgrade monitor prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f each_cluster.yaml
 
 # jmx, kafka exporter 테스트용 앱
 helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/skafka-2.0.3.tgz \
