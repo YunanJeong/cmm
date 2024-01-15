@@ -25,9 +25,11 @@ helm upgrade grafana prometheus-community/kube-prometheus-stack --version 54.2.2
 
 # each cluster  (nodeSelector 설정 포함)
 helm install monitor prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f each_cluster.yaml \
---set "prometheus.prometheusSpec.nodeSelector=kr-mum/noderole=kafka" \
---set "prometheusOperator.nodeSelector=kr-mum/noderole=kafka"
-
+--set "prometheus.prometheusSpec.nodeSelector.kr-mum/noderole=kafka" \
+--set "prometheusOperator.nodeSelector.kr-mum/noderole=kafka"
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f each_cluster.yaml \
+--set "prometheus.prometheusSpec.nodeSelector.kr-mum/noderole=kafka" \
+--set "prometheusOperator.nodeSelector.kr-mum/noderole=kafka"
 
 helm upgrade monitor prometheus-community/kube-prometheus-stack --version 54.2.2 -n monitor -f each_cluster.yaml
 
