@@ -57,7 +57,7 @@ grafana:
                                     # metadata.labels 섹션에 label-labelValue와 동일한 key-value를 입력
                                     # data섹션에 대시보드 설정json을 입력
                                   # 이후 configmap 배포시 대시보드가 배포된다. (오류시 sidecar만 재실행)
-                                  # configmap은 helm template이나 kubectl로 배포하면 된다.
+                                  # configmap은 "value파일 제일 아래 extraManifests섹션"이나 별도 helm template 등을 활용가능
 
       # Allow discovery in all namespaces for dashboards
       searchNamespace: ALL
@@ -178,3 +178,20 @@ grafana:
 
   serviceMonitor:
     enabled: false
+
+
+## 
+## Extra manifests to deploy as an array
+extraManifests: # []
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: dasboard-configmap-test
+      namespace: "{{ .Release.Namespace }}"
+      labels:
+        grafana_dashboard: "1"
+    # tpl이 적용되므로 직접 json을 적으면 대괄호 때문에 파싱에러 가능성이 큼
+    data:
+      nodes.json: "{{ .Files.Get \"dashboards/nodes_line.json\" | toJson }}"  # 파일 참조는 차트 내부 디렉토리 기준임.
+    
+        
