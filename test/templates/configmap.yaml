@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-configmap-test
+  # namespace: monitor
+  labels:
+    grafana_dashboard: "1"
+# tpl이 적용되므로 직접 json을 적으면 대괄호 때문에 파싱에러 가능성이 큼
+#   # 파일 참조는 차트 내부 디렉토리 기준임.
+data:
+  nodes.json: {{ .Values.dashboard }}
+    
