@@ -66,7 +66,27 @@ grafana:
   ##
   ## `path` must be /var/lib/grafana/dashboards/<provider_name>
   ##
-  dashboardProviders: {}
+  dashboardProviders: # {}
+   dashboardproviders.yaml:
+     apiVersion: 1
+     providers:
+      - name: 'default'
+        orgId: 1
+        folder: 'node-exporter-multi-datasource'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /var/lib/grafana/dashboards/default  
+      - name: 'krmum'
+        orgId: 1
+        folder: 'node-exporter-each-dc'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /var/lib/grafana/dashboards/krmum  
+
   #  dashboardproviders.yaml:
   #    apiVersion: 1
   #    providers:
@@ -85,7 +105,40 @@ grafana:
   ##
   ## dashboards per provider, use provider name as key.
   ##
-  dashboards: {}
+  dashboards: # {}
+    default:
+      my-dashboard:
+        url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/nodes.json
+      my-dash:
+        url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/node-cluster-rsrc-use.json
+      cluster-monitor:
+        gnetId: 1860
+        revision: 32
+    krmum:
+      kr-mum-monitor:
+        gnetId: 11074
+        revision: 9
+        datasource: kr-mum-prometheus
+      modfied-test:
+        url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/11074_rev9_modified.json
+        datasource: kr-mum-prometheus
+      modfied-test2:
+        url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/11074_rev9_modified.json
+        datasource: prometheus-sample
+      # kr-mum-monitor:
+      #   gnetId: 15172
+      #   revision: 6
+      #   datasource: kr-mum-prometheus
+      # kr-mum-monitor3:
+      #   gnetId: 16098
+      #   revision: 2
+
+
+      # cluster-monitor1:
+      #   gnetId: 11074
+      #   revision: 9
+      #   datasource: prometheus-sample
+      
     # default:
     #   some-dashboard:
     #     json: |
@@ -156,8 +209,7 @@ grafana:
       defaultDatasourceEnabled: false  # 기본 Data Source 생성 (grafana와 동일 cluster에서, 동일 helm release로 생성된 Prometheus 주소를 참조)
       isDefaultDatasource: false       # 
 
-      uid: prometheus                  # 대시보드의 UID(고유 식별자)는 여러 Grafana 설치 간에 대시보드를 고유하게 식별하는 데 사용될 수 있습니다.
-                                       # UID를 사용하면 대시보드에 액세스하기 위한 일관된 URL을 가질 수 있으므로 대시보드 제목을 변경해도 해당 대시보드에 대한 북마크 링크가 끊어지지 않습니다.
+      uid: prometheus                  
 
       ## URL of prometheus datasource
       ##
