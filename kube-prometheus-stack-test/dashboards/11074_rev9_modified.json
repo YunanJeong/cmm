@@ -3940,6 +3940,6 @@
       ]
     },
     "timezone": "browser",
-    "title": "${title}",
+    "title": "$title",
     "version": 2
   }
