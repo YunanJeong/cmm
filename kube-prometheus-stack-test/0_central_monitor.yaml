@@ -72,21 +72,28 @@ grafana:
      providers:
       - name: 'default'
         orgId: 1
-        folder: 'node-exporter-multi-datasource'
+        folder: 'all-cluster-monitoring'
         type: file
         disableDeletion: true
         editable: false
         options:
           path: /var/lib/grafana/dashboards/default  
-      - name: 'krmum'
+      - name: 'kr-mum'
         orgId: 1
-        folder: 'node-exporter-each-dc'
+        folder: 'cluster/kr-mum'
         type: file
         disableDeletion: true
         editable: false
         options:
-          path: /var/lib/grafana/dashboards/krmum  
-
+          path: /var/lib/grafana/dashboards/kr-mum  
+      - name: 'test'
+        orgId: 1
+        folder: 'cluster/test'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /var/lib/grafana/dashboards/test  
   #  dashboardproviders.yaml:
   #    apiVersion: 1
   #    providers:
@@ -107,22 +114,28 @@ grafana:
   ##
   dashboards: # {}
     default:
-      my-dashboard:
+      nodes:
         url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/nodes.json
-      my-dash:
+      node-cluster-rsrc-use:
         url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/node-cluster-rsrc-use.json
-      cluster-monitor:
+      node-exporter-full:
         gnetId: 1860
         revision: 32
-    krmum:
-      kr-mum-monitor:
+    kr-mum:
+      all-nodes:
         gnetId: 11074
         revision: 9
         datasource: kr-mum-prometheus
       modfied-test:
         url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/11074_rev9_modified.json
         datasource: kr-mum-prometheus
-      modfied-test2:
+      # modfied-test2:
+      #   url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/11074_rev9_modified.json
+      #   datasource: prometheus-sample
+    test:
+      all-nodes:
+        gnetId: 11074
+        revision: 9
         url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/11074_rev9_modified.json
         datasource: prometheus-sample
       # kr-mum-monitor:
