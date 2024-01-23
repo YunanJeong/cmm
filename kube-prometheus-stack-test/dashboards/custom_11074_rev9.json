@@ -1215,6 +1215,7 @@
           },
           "showUnfilled": true,
           "sizing": "manual",
+          "minVizWidth": 75,
           "minVizHeight": 1,
           "maxVizHeight": 300
         },
