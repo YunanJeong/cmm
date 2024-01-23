@@ -32,6 +32,9 @@ grafana:
     path: /
     tls: []
 
+  # grafana/grafana의 pvc는 초기 프로비저닝 용도로 사용되며, helm uninstall시 함께 삭제된다. pvc 유지 옵션 미지원.
+    # template을 수정하거나 kubectl patch로 정책을 임시수정해줘야 한다.
+    # persistence매니페스트의 spec에서 persistentVolumeReclaimPolicy: Retain이 있어야 함 (Default: Delete)
   persistence:
     type: pvc
     enabled: false
