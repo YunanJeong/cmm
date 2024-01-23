@@ -175,7 +175,7 @@
             "link": true,
             "linkTargetBlank": false,
             "linkTooltip": "Browse host details",
-            "linkUrl": "d/xfpJB9FGz/node-exporter?orgId=1&var-job=${job}&var-hostname=All&var-node=${__cell}&var-device=All&var-origin_prometheus=$origin_prometheus&DS__VICTORIAMETRICS=${DS__VICTORIAMETRICS}",
+            "linkUrl": "d/xfpJB9FGz/node-exporter?orgId=1&var-job=${job}&var-hostname=All&var-node=${__cell}&var-device=All&var-origin_prometheus=$origin_prometheus",
             "mappingType": 1,
             "pattern": "instance",
             "thresholds": [],
