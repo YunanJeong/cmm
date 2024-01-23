@@ -111,6 +111,7 @@
         "id": 187,
         "panels": [],
         "title": "Resource Overview (associated JOB)，Host：$show_hostname，Instance：$node",
+        "description": "Selected Host：$show_hostname，Instance：$node",
         "type": "row"
       },
       {
