@@ -1213,7 +1213,9 @@
             "fields": "",
             "values": false
           },
-          "showUnfilled": true
+          "showUnfilled": true,
+          "minVizHeight": 1,
+          "maxVizHeight": 300
         },
         "pluginVersion": "7.2.0",
         "targets": [
