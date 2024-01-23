@@ -70,33 +70,15 @@ grafana:
    dashboardproviders.yaml:
      apiVersion: 1
      providers:
-      - name: 'default'
+      - name: 'my-default'
         orgId: 1
         folder: 'all-cluster-monitoring'
         type: file
         disableDeletion: true
         editable: false
         options:
-          path: /var/lib/grafana/dashboards/default  
-      - name: 'kr-mum'
-        orgId: 1
-        folder: 'cluster/kr-mum'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /var/lib/grafana/dashboards/kr-mum  
-      - name: 'test'
-        orgId: 1
-        folder: 'cluster/test'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /var/lib/grafana/dashboards/test  
-  #  dashboardproviders.yaml:
-  #    apiVersion: 1
-  #    providers:
+          path: /var/lib/grafana/dashboards/my-default  
+
   #    - name: 'default'
   #      orgId: 1
   #      folder: ''
@@ -113,7 +95,10 @@ grafana:
   ## dashboards per provider, use provider name as key.
   ##
   dashboards: # {}
-    default:
+    my-default:
+      custom_11074_rev9: # 단일 datasource만 참조되는 것을 여러 Datasource 참조할 수 있도록 수정
+        url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/custom_11074_rev9.json
+        # datasource: '$datasource'    
       nodes:
         url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/nodes.json
       node-cluster-rsrc-use:
@@ -121,37 +106,7 @@ grafana:
       node-exporter-full:
         gnetId: 1860
         revision: 32
-    kr-mum:
-      all-nodes:
-        gnetId: 11074
-        revision: 9
-        datasource: kr-mum-prometheus
-      modfied-test:
-        url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/11074_rev9_modified.json
-        datasource: kr-mum-prometheus
-      # modfied-test2:
-      #   url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/11074_rev9_modified.json
-      #   datasource: prometheus-sample
-    test:
-      all-nodes:
-        gnetId: 11074
-        revision: 9
-        url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/11074_rev9_modified.json
-        datasource: prometheus-sample
-      # kr-mum-monitor:
-      #   gnetId: 15172
-      #   revision: 6
-      #   datasource: kr-mum-prometheus
-      # kr-mum-monitor3:
-      #   gnetId: 16098
-      #   revision: 2
 
-
-      # cluster-monitor1:
-      #   gnetId: 11074
-      #   revision: 9
-      #   datasource: prometheus-sample
-      
     # default:
     #   some-dashboard:
     #     json: |
@@ -324,16 +279,16 @@ grafana:
 
 ## 
 ## Extra manifests to deploy as an array
-extraManifests: # []
-  - apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: dasboard-configmap-test
-      namespace: "{{ .Release.Namespace }}"
-      labels:
-        grafana_dashboard: "1"
-    # tpl이 적용되므로 직접 json을 적으면 대괄호 때문에 파싱에러 가능성이 큼
-    data:
-      # 파일 참조는 차트 내부 디렉토리 기준임.
-      nodes.json: '{{ .Files.Get "dashboards/nodes_line.json" | toJson }}'  
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: dasboard-configmap-test
+  #     namespace: "{{ .Release.Namespace }}"
+  #     labels:
+  #       grafana_dashboard: "1"
+  #   # tpl이 적용되므로 직접 대시보드 json을 기입하면 대괄호 때문에 파싱에러 가능성이 큼
+  #   data:
+  #     # 파일 참조는 차트 내부 디렉토리 기준임.
+  #     nodes.json: '{{ .Files.Get "dashboards/nodes_line.json" | toJson }}'  
         
