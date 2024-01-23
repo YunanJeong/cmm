@@ -1214,6 +1214,7 @@
             "values": false
           },
           "showUnfilled": true,
+          "namePlacement": "auto",
           "sizing": "manual",
           "minVizWidth": 75,
           "minVizHeight": 1,
