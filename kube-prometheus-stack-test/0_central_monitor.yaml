@@ -64,6 +64,34 @@ grafana:
       ##
       # sizeLimit: 300Mi
 
+  ## Additional grafana server volume mounts
+  # Defines additional volume mounts.
+  # extraVolumeMounts: []
+    # - name: extra-volume-0
+    #   mountPath: /mnt/volume0
+    #   readOnly: true
+    # - name: extra-volume-1
+    #   mountPath: /mnt/volume1
+    #   readOnly: true
+    # - name: grafana-secrets
+    #   mountPath: /mnt/volume2
+
+  ## Additional Grafana server volumes
+  # extraVolumes: []
+    # - name: extra-volume-0
+    #   existingClaim: volume-claim
+    # - name: extra-volume-1
+    #   hostPath:
+    #     path: /usr/shared/
+    #     type: ""
+    # - name: grafana-secrets
+    #   csi:
+    #     driver: secrets-store.csi.k8s.io
+    #     readOnly: true
+    #     volumeAttributes:
+    #       secretProviderClass: "grafana-env-spc"
+
+
   ## Configure grafana dashboard providers
   ## ref: http://docs.grafana.org/administration/provisioning/#dashboards
   ##
@@ -180,7 +208,7 @@ grafana:
       defaultDatasourceEnabled: false  # 기본 Data Source 생성 (grafana와 동일 cluster에서, 동일 helm release로 생성된 Prometheus 주소를 참조)
       isDefaultDatasource: false       # 
 
-      uid: prometheus                  
+      uid: prometheus
 
       ## URL of prometheus datasource
       ##
