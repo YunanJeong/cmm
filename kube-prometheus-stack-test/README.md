@@ -70,6 +70,9 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 
 - EC2에서는 정상실행되나, 껐다 켰다 반복시 grafana Pod에서 동일한 failed Event 발생
 
+- volume 관련 설정시 비슷한 에러가 발생
+  - 이 땐, k3s를 재시작하면 해결됨
+
 ```sh
 "MountVolume.SetUp failed for volume ...
 ```
