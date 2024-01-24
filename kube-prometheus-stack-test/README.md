@@ -107,5 +107,6 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 ### promethues alertmanager 특징
 
 - 널리 사용되어와서, 안정적일듯. 기존에도 웹훅기능 제공(메일, 슬랙, MS팀즈, ...)
-=> 근데 왜 kps차트는 grafana쪽 설정에 alertmanager가 있지???
+- => 근데 왜 kps차트는 grafana쪽 설정에 alertmanager가 있지???
+  - => 이거는 datasource로 prometheus의 alertmanager를 추가하는 부분이다.
   
