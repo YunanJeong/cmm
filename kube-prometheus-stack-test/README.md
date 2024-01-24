@@ -108,5 +108,6 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 
 - 널리 사용되어와서, 안정적일듯. 기존에도 웹훅기능 제공(메일, 슬랙, MS팀즈, ...)
 - => 근데 왜 kps차트는 grafana쪽 설정에 alertmanager가 있지???
-  - => 이거는 datasource로 prometheus의 alertmanager를 추가하는 부분이다.
+  - => 이거는 datasource로 prometheus의 alertmanager를 추가하기 위한 용도다.
+  - => Grafana에서 AlertManager를 Datasource로 추가하는 것은, Alertmanager에서 생성된 알림을 Grafana 대시보드에서 시각화하고 관리하기 위함(threshold를 넘어선 횟수, 내역 등 체크)
   
