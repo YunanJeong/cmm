@@ -89,3 +89,20 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 - 메인컨테이너와 함께 동작하는 보조컨테이너(helper container)를 의미
 - 메인컨테이너 앱의 주 기능 외에 로그처리, 모니터링, 보안, 프록시, 파일 시스템 관리 등의 용도로 사용
 - 디커플링, 재사용성, 유지보수성에 유리
+
+## Alert
+
+흔히 알려진 AlertManager는 Prometheus의 기능이고, Prometheus 본 앱과 별도로 실행되는 앱이다.
+
+### grafana alerting 특징
+
+- prometheus alertmanager와도 기능이 겹침. grafana stack(loki) 쓸 땐 좋음
+- prometheus 외 다양한 datasource에 대해 알람가능
+- 7버전(현재 kps 차트의 grafana 버전)까지 대시보드 위주 기능임. 임계치 얼마나 넘었나 대시보드에 표시해주는 수준.
+- 8,9버전에선 다양한 알람기능을 지원하나, 계속 급변하고 있어서 쓰기 좀 애매함
+
+### promethues alertmanager 특징
+
+- 널리 사용되어와서, 안정적일듯. 기존에도 웹훅기능 제공(메일, 슬랙, MS팀즈, ...)
+=> 근데 왜 kps차트는 grafana쪽 설정에 alertmanager가 있지???
+  
