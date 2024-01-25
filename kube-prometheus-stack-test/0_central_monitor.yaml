@@ -1,14 +1,28 @@
 ## Deploy node exporter as a daemonset to all nodes
 ##
 nodeExporter:
-  enabled: false
+  enabled: false  
 
 prometheus:
-  enabled: false
+  enabled: false  
 
 prometheusOperator:
+  enabled: false  
+
+alertmanager:
   enabled: false
 
+## Flag to disable all the kubernetes component scrapers
+kubernetesServiceMonitors:
+  enabled: false
+
+kubeStateMetrics:       ## Component scraping kube state metrics
+  enabled: false
+
+
+################################### 
+#  Centrailized Monitoring Host
+###################################
 grafana:
   enabled: true
   namespaceOverride: ""
@@ -322,4 +336,6 @@ extraManifests: []
   #   data:
   #     # 파일 참조는 차트 내부 디렉토리 기준임.
   #     nodes.json: '{{ .Files.Get "dashboards/nodes_line.json" | toJson }}'  
-        
+
+
+
