@@ -146,9 +146,9 @@ prometheusOperator:
   nodeSelector: {}
 
 # 쿠버네티스 컴포넌트(ApiServer, kubelet, ...) 메트릭 수집 여부 (ServiceMonitor실행여부)
-# default는 true이나, 메모리 부하가 상당하므로 필요치 않은 항목은 false처리
+# default는 true이나, 메모리 부하가 상당하므로 필요치 않은 항목은 false처리 필요
   # 여기서 false시, defaultRules섹션에서 해당규칙도 false해주면 좋다.
-  # (ServiceMonitor가 꺼져있는데 recording rule이 남아있으면, 무시가능한 수준의 불필요한 계산부하가 발생)
+  # (ServiceMonitor가 꺼져있는데 recording rule이 남아있으면, 무시가능한 수준으로 불필요한 계산부하 발생)
 kubernetesServiceMonitors:  ## 전체 On-Off
   enabled: false            # default: true
 # 개별 On-Off
@@ -290,42 +290,6 @@ alertmanager:
   ingress:
     enabled: false
 
-    # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
-    # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-    # ingressClassName: nginx
-
-    annotations: {}
-
-    labels: {}
-
-    ## Override ingress to a different defined port on the service
-    # servicePort: 8081
-    ## Override ingress to a different service then the default, this is useful if you need to
-    ## point to a specific instance of the alertmanager (eg kube-prometheus-stack-alertmanager-0)
-    # serviceName: kube-prometheus-stack-alertmanager-0
-
-    ## Hosts must be provided if Ingress is enabled.
-    ##
-    hosts: []
-      # - alertmanager.domain.com
-
-    ## Paths to use for ingress rules - one path should match the alertmanagerSpec.routePrefix
-    ##
-    paths: []
-    # - /
-
-    ## For Kubernetes >= 1.18 you should specify the pathType (determines how Ingress paths should be matched)
-    ## See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#better-path-matching-with-path-types
-    # pathType: ImplementationSpecific
-
-    ## TLS configuration for Alertmanager Ingress
-    ## Secret must be manually created in the namespace
-    ##
-    tls: []
-    # - secretName: alertmanager-general-tls
-    #   hosts:
-    #   - alertmanager.example.com
-
   ## Configuration for Alertmanager secret
   ##
   secret:
@@ -336,44 +300,6 @@ alertmanager:
   ##
   ingressPerReplica:
     enabled: false
-
-    # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
-    # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-    # ingressClassName: nginx
-
-    annotations: {}
-    labels: {}
-
-    ## Final form of the hostname for each per replica ingress is
-    ## {{ ingressPerReplica.hostPrefix }}-{{ $replicaNumber }}.{{ ingressPerReplica.hostDomain }}
-    ##
-    ## Prefix for the per replica ingress that will have `-$replicaNumber`
-    ## appended to the end
-    hostPrefix: ""
-    ## Domain that will be used for the per replica ingress
-    hostDomain: ""
-
-    ## Paths to use for ingress rules
-    ##
-    paths: []
-    # - /
-
-    ## For Kubernetes >= 1.18 you should specify the pathType (determines how Ingress paths should be matched)
-    ## See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#better-path-matching-with-path-types
-    # pathType: ImplementationSpecific
-
-    ## Secret name containing the TLS certificate for alertmanager per replica ingress
-    ## Secret must be manually created in the namespace
-    tlsSecretName: ""
-
-    ## Separated secret for each per replica Ingress. Can be used together with cert-manager
-    ##
-    tlsSecretPerReplica:
-      enabled: false
-      ## Final form of the secret for each per replica ingress is
-      ## {{ tlsSecretPerReplica.prefix }}-{{ $replicaNumber }}
-      ##
-      prefix: "alertmanager"
 
   ## Configuration for Alertmanager service
   ##
@@ -434,31 +360,6 @@ alertmanager:
   ##
   servicePerReplica:
     enabled: false
-    annotations: {}
-
-    ## Port for Alertmanager Service per replica to listen on
-    ##
-    port: 9093
-
-    ## To be used with a proxy extraContainer port
-    targetPort: 9093
-
-    ## Port to expose on each node
-    ## Only used if servicePerReplica.type is 'NodePort'
-    ##
-    nodePort: 30904
-
-    ## Loadbalancer source IP ranges
-    ## Only used if servicePerReplica.type is "LoadBalancer"
-    loadBalancerSourceRanges: []
-
-    ## Denotes if this Service desires to route external traffic to node-local or cluster-wide endpoints
-    ##
-    externalTrafficPolicy: Cluster
-
-    ## Service type
-    ##
-    type: ClusterIP
 
   ## If true, create a serviceMonitor for alertmanager
   ##
