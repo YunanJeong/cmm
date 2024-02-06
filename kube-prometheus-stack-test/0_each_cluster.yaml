@@ -143,6 +143,12 @@ prometheus-node-exporter:
 
 prometheusOperator:
   enabled: true
+  ## Service account for Prometheus Operator to use.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+  ##
+  serviceAccount:
+    create: true  # default: true
+    name: ""      # default: ""
   nodeSelector: {}
 
 # 쿠버네티스 컴포넌트(ApiServer, kubelet, ...) 메트릭 수집 여부 (ServiceMonitor실행여부)
