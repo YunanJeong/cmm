@@ -110,4 +110,14 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 - => 근데 왜 kps차트는 grafana쪽 설정에 alertmanager가 있지???
   - => 이거는 datasource로 prometheus의 alertmanager를 추가하기 위한 용도다.
   - => Grafana에서 AlertManager를 Datasource로 추가하는 것은, Alertmanager에서 생성된 알림을 Grafana 대시보드에서 시각화하고 관리하기 위함(threshold를 넘어선 횟수, 내역 등 체크)
-  
+
+## EKS 에서 권한(Role)문제
+
+- 권한 관련 문제는 환경 제공자마다 다르게 나타나는 것 같다.
+- GKE는 권한 최적화해서 해결하는 방법이 있다는 것 같은데, EKS는 그냥 관리자 권한 전체 부여해야할듯
+- [참고](https://github.com/prometheus-operator/prometheus-operator/issues/1189)
+
+```sh
+kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=your.email@address.com 
+kubectl create clusterrolebinding yunan-cluster-admin-binding --clusterrole=cluster-admin --user=yunan_all
+```
