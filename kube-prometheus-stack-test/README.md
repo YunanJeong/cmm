@@ -121,4 +121,5 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 # clusterrole 중에 관리자 권한(cluster-admin)이 기본으로 있고, 이걸 사용하는 user에게 clusterbinding으로 연결해준다.
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=your.email@address.com 
 kubectl create clusterrolebinding yunan-cluster-admin-binding --clusterrole=cluster-admin --user=yunan_all
+# --set "prometheus.prometheusSpec.nodeSelector.wai-eks/noderole=home" \
 ```
