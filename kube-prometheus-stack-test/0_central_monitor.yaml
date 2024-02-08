@@ -47,14 +47,12 @@ grafana:
     tls: []
 
   # grafana/grafana의 pvc는 초기 프로비저닝 용도로 사용되며, helm uninstall시 함께 삭제된다. pvc 유지 옵션 미지원.
-    # template을 수정하거나 kubectl patch로 정책을 임시수정해줘야 한다.
-    # persistence매니페스트의 spec에서 persistentVolumeReclaimPolicy: Retain이 있어야 함 (Default: Delete)
-    # 대신 persistence.type 또는 persistence.existingClaim 섹션을 고려해볼 수 있음
-
+    # pvc 정책이 "persistentVolumeReclaimPolicy: Delete" 로 고정되어있음
+    # 대신 persistence.type을 statefulset으로 설정하면 helm uninstall해도 데이터가 보존됨!
   persistence:
     # Type of persistence (pvc or statefulset)
-    type: pvc
-    enabled: false
+    type: statefulset
+    enabled: true
     # storageClassName: default
     accessModes:
       - ReadWriteOnce
