@@ -286,6 +286,18 @@ grafana:
     type: prometheus
     url: http://172.31.24.115:9090  # http/https 구분 기입 필요  # Public IP 노출주의
     version: 1
+  - name: kr-rag-prometheus
+    access: proxy
+    basicAuth: true
+    basicAuthPassword: pass
+    basicAuthUser: daco
+    editable: false
+    jsonData:
+        tlsSkipVerify: true
+    orgId: 1
+    type: prometheus
+    url: http://172.31.58.245:9090  # http/https 구분 기입 필요  # Public IP 노출주의
+    version: 1
   - name: kr-mum-prometheus
     access: proxy
     basicAuth: true
@@ -298,6 +310,7 @@ grafana:
     type: prometheus
     url: http://172.31.4.123:9090  # http/https 구분 기입 필요  # Public IP 노출주의
     version: 1
+
   # EKS 테스트
   - name: eks-prometheus
     access: proxy
@@ -309,7 +322,7 @@ grafana:
         tlsSkipVerify: true
     orgId: 1
     type: prometheus
-    url: http://{EKS에서 LB 설정시 자동발급되는 주소}.ap-northeast-2.elb.amazonaws.com:9090  # http/https 구분 기입 필요  # Public IP 노출주의
+    url: http://${MY_EKS_DNS}:9090  # http/https 구분 기입 필요  # Public IP 노출주의
     version: 1
   # - name: prometheus-sample
   #   access: proxy

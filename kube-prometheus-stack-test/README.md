@@ -22,6 +22,9 @@ helm upgrade prostack prometheus-community/kube-prometheus-stack --version 55.8.
 # grafana only
 helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f central_monitor.yaml
 helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f central_monitor.yaml
+# grafana only (환경변수 사용시)
+envsubst < central_monitor.yaml | helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f -
+envsubst < central_monitor.yaml | helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f -
 
 # each cluster  (nodeSelector 설정 포함)
 helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f each_cluster.yaml \
