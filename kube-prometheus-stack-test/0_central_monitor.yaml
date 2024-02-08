@@ -31,6 +31,7 @@ grafana:
   forceDeployDashboards: true            ## ForceDeployDashboard Create dashboard configmap even if grafana deployment has been disabled
   defaultDashboardsEnabled: true         ## Deploy default dashboards
   defaultDashboardsTimezone: Asia/Seoul  ## Timezone for the default dashboards
+  defaultDashboardsEditable: false
   adminPassword: admin
 
   rbac:
@@ -46,9 +47,10 @@ grafana:
     path: /
     tls: []
 
-  # grafana/grafana의 pvc는 초기 프로비저닝 용도로 사용되며, helm uninstall시 함께 삭제된다. pvc 유지 옵션 미지원.
-    # pvc 정책이 "persistentVolumeReclaimPolicy: Delete" 로 고정되어있음
+  # grafana/grafana의 default pv는 초기 프로비저닝 용도이며, helm uninstall시 함께 삭제된다.
+    # pv 정책이 "persistentVolumeReclaimPolicy: Delete" 로 고정되어있어서 value로 정책변경불가
     # 대신 persistence.type을 statefulset으로 설정하면 helm uninstall해도 데이터가 보존됨!
+    # 이 상태에서 pv 삭제를 원할시, namespace에 있는 pvc를 삭제하면됨
   persistence:
     # Type of persistence (pvc or statefulset)
     type: statefulset
