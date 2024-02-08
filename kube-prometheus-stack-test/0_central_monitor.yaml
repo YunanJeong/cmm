@@ -274,17 +274,18 @@ grafana:
   ## ref: http://docs.grafana.org/administration/provisioning/#datasources
   # grafana.sidecar.datasources.enabled=true 필요
   additionalDataSources:  # []     
-  - name: prometheus-sample
+  # EKS 테스트 # 맨 처음 기술된게 대시보드에서 default선택됨
+  - name: eks-prometheus
     access: proxy
     basicAuth: true
     basicAuthPassword: pass
-    basicAuthUser: daco
+    basicAuthUser: user
     editable: false
     jsonData:
         tlsSkipVerify: true
     orgId: 1
     type: prometheus
-    url: http://172.31.24.115:9090  # http/https 구분 기입 필요  # Public IP 노출주의
+    url: http://${MY_EKS_DNS}:9090  # http/https 구분 기입 필요  # Public IP 노출주의
     version: 1
   - name: kr-rag-prometheus
     access: proxy
@@ -309,20 +310,6 @@ grafana:
     orgId: 1
     type: prometheus
     url: http://172.31.4.123:9090  # http/https 구분 기입 필요  # Public IP 노출주의
-    version: 1
-
-  # EKS 테스트
-  - name: eks-prometheus
-    access: proxy
-    basicAuth: true
-    basicAuthPassword: pass
-    basicAuthUser: user
-    editable: false
-    jsonData:
-        tlsSkipVerify: true
-    orgId: 1
-    type: prometheus
-    url: http://${MY_EKS_DNS}:9090  # http/https 구분 기입 필요  # Public IP 노출주의
     version: 1
   # - name: prometheus-sample
   #   access: proxy
