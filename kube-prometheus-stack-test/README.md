@@ -9,6 +9,8 @@
 
 - 구 차트이름이 prometheus-opeator였으나, 변경됨. 현재는 일부 구성 요소를 prometheus-operator라고 부름
 
+## 단일 클러스터 내 모니터링
+
 ```sh
 # Add Repo
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -18,23 +20,40 @@ helm install prostack prometheus-community/kube-prometheus-stack --version 55.8.
 helm install prostack prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f single_cluster.yaml
 # 업글
 helm upgrade prostack prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f single_cluster.yaml
+```
 
+## 중앙 모니터
+
+```sh
 # grafana only
 helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f central_monitor.yaml
 helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f central_monitor.yaml
-# grafana only (환경변수 사용시)
+
+# grafana only (환경변수 사용)
 envsubst < central_monitor.yaml | helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f -
 envsubst < central_monitor.yaml | helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f -
+```
 
-# each cluster  (nodeSelector 설정 포함)
-helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f each_cluster.yaml \
---set "prometheus.prometheusSpec.nodeSelector.kr-mum/noderole=kafka" \
---set "prometheusOperator.nodeSelector.kr-mum/noderole=kafka"
+## 개별 클러스터 설정
+
+```sh
+# each cluster  exporter and prometheus 
+helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f each_cluster.yaml 
+
+# prometheus nodeSelector 지정 예시
 helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f each_cluster.yaml \
 --set "prometheus.prometheusSpec.nodeSelector.kr-mum/noderole=kafka" \
 --set "prometheusOperator.nodeSelector.kr-mum/noderole=kafka"
 
-# jmx, kafka exporter 테스트용 앱
+# kube metric 켜기 (EKS)
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n platform -f 0_each_cluster.yaml \
+--set "kubernetesServiceMonitors.enabled=true" \
+--set "kubeStateMetrics.enabled=true"
+```
+
+### jmx, kafka exporter 테스트용 앱
+
+```sh
 helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/skafka-2.0.3.tgz \
 -f https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/kraft-multi.yaml \
 --set "kafka.externalAccess.autoDiscovery.enabled=false" \
