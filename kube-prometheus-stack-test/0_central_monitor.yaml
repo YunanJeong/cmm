@@ -1,13 +1,13 @@
 ## Deploy node exporter as a daemonset to all nodes
 ##
 nodeExporter:
-  enabled: false  
+  enabled: false
 
 prometheus:
-  enabled: false  
+  enabled: false
 
 prometheusOperator:
-  enabled: false  
+  enabled: false
 
 alertmanager:
   enabled: false
@@ -20,7 +20,7 @@ kubeStateMetrics:       ## Component scraping kube state metrics
   enabled: false
 
 
-################################### 
+###################################
 #  Centrailized Monitoring Host
 ###################################
 grafana:
@@ -32,14 +32,14 @@ grafana:
   defaultDashboardsEnabled: true         ## Deploy default dashboards
   defaultDashboardsTimezone: Asia/Seoul  ## Timezone for the default dashboards
   defaultDashboardsEditable: false
-  adminPassword: admin
+  adminPassword: ${GRAFANA_ADMIN}
 
   rbac:
     pspEnabled: false  ## If true, Grafana PSPs will be created
 
   ingress:
     enabled: true
-    annotations: 
+    annotations:
       spec.ingressClassName: traefik  # k3s default ingress controller
     labels: {}
     hosts:
@@ -127,7 +127,7 @@ grafana:
         disableDeletion: true
         editable: false
         options:
-          path: /var/lib/grafana/dashboards/my-default  
+          path: /var/lib/grafana/dashboards/my-default
 
   #    - name: 'default'
   #      orgId: 1
@@ -148,7 +148,7 @@ grafana:
     my-default:
       custom_11074_rev9: # 여러 Datasource 참조할 수 있도록 수정, 개별노드 페이지 쿼리 수정, 일부 패널 해상도 조정
         url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/custom_11074_rev9.json
-        # datasource: '$datasource'    
+        # datasource: '$datasource'
       nodes:
         url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/nodes.json
       node-cluster-rsrc-use:
@@ -196,10 +196,10 @@ grafana:
   dashboardsConfigMaps: {}
   #  default: ""
 
-  sidecar: 
+  sidecar:
     dashboards:                 # 대시보드 사전 설정하기 (grafana-sc-dashboard)
       enabled: true               # true시, kube-prometheus-stack의 기본제공 대시보드 or 커스텀 대시보드를 활성화
-      
+
       label: grafana_dashboard    # 커스텀 대시보드 사전 설정하기 (별도 configmap 생성 필요)
       labelValue: "1"             # configmap 매니페스트에서,
                                     # metadata.labels 섹션에 label-labelValue와 동일한 key-value를 입력
@@ -220,12 +220,12 @@ grafana:
           enabled: false  # default: false ?????????????????????????????
       provider:
         allowUiUpdates: true
-    
+
     # datasource 사전 설정하기 (grafana)
     datasources:
       enabled: true
       defaultDatasourceEnabled: false  # 기본 Data Source 생성 (grafana와 동일 cluster에서, 동일 helm release로 생성된 Prometheus 주소를 참조)
-      isDefaultDatasource: false       # 
+      isDefaultDatasource: false       #
 
       uid: prometheus
 
@@ -278,7 +278,7 @@ grafana:
   ## Configure additional grafana datasources (passed through tpl)
   ## ref: http://docs.grafana.org/administration/provisioning/#datasources
   # grafana.sidecar.datasources.enabled=true 필요
-  additionalDataSources:  # []     
+  additionalDataSources:  # []
   # EKS 테스트 # 맨 처음 기술된게 대시보드에서 default선택됨
   - name: eks-prometheus
     access: proxy
@@ -340,7 +340,7 @@ grafana:
     enabled: false
 
 
-## 
+##
 ## Extra manifests to deploy as an array
 extraManifests: []
   # - apiVersion: v1
@@ -353,7 +353,7 @@ extraManifests: []
   #   # tpl이 적용되므로 직접 대시보드 json을 기입하면 대괄호 때문에 파싱에러 가능성이 큼
   #   data:
   #     # 파일 참조는 차트 내부 디렉토리 기준임.
-  #     nodes.json: '{{ .Files.Get "dashboards/nodes_line.json" | toJson }}'  
+  #     nodes.json: '{{ .Files.Get "dashboards/nodes_line.json" | toJson }}'
 
 
 
