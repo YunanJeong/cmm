@@ -123,15 +123,29 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 
 - prometheus alertmanager와도 기능이 겹침. grafana stack(loki) 쓸 땐 좋음
 - prometheus 외 다양한 datasource에 대해 알람가능
-- 7버전(현재 kps 차트의 grafana 버전)까지 대시보드 위주 기능임. 임계치 얼마나 넘었나 대시보드에 표시해주는 수준.
-- 8,9버전에선 다양한 알람기능을 지원하나, 계속 급변하고 있어서 쓰기 좀 애매함
+- 장점
+  - 멀티 클러스터 모니터링시 중앙에서 관리가능
+  - 프로비전 뿐 아니라, UI에서도 간단히 설정가능하다.
+  - Alertmanger보다 간소하다고하지만, 메트릭이 '임계값을 초과하고 특정 시간동안 지속'되는 것을 조건으로 알람하는 수준은 충분히 가능. SMTP, MS팀즈 전달도 가능
+- 단점
+  - Prometheus AlertManager 보다는 약한 기능
+  - 버전마다 기능이 급변하는 중
+  - 대시보드 패널에 의존적
 
 ### promethues alertmanager 특징
 
-- 널리 사용되어와서, 안정적일듯. 기존에도 웹훅기능 제공(메일, 슬랙, MS팀즈, ...)
-- => 근데 왜 kps차트는 grafana쪽 설정에 alertmanager가 있지???
+- 장점
+  - 널리 사용되어와서, 안정적
+  - 여러 메트릭 복합 조건으로 트리거 가능
+  - 특정 시간대만 검사해서 Alert 발생 등 가능
+  - => 근데 왜 kps차트는 grafana쪽 설정에 alertmanager가 있지???
   - => 이거는 datasource로 prometheus의 alertmanager를 추가하기 위한 용도다.
   - => Grafana에서 AlertManager를 Datasource로 추가하는 것은, Alertmanager에서 생성된 알림을 Grafana 대시보드에서 시각화하고 관리하기 위함(threshold를 넘어선 횟수, 내역 등 체크)
+- 단점
+  - 멀티 클러스터를 모니터링할 때는 개별 네트워크 인가가 필요
+  - 클러스터마다 설정도 달라질 수 있기 떄문에 관리가 불편해질 수 있음
+- kps차트에서 alert 관련기능은 모두 prometheus alertmanager의 rule을 설정하는 방식으로 관리되는 것 같다.
+- grafana의 alert 기능을 쓰고 싶으면, subchart value를 확인하자
 
 ## EKS 에서 권한(Role)문제
 
