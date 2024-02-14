@@ -1,8 +1,8 @@
 grafana:
   enabled: false
 
-# 기본 탑재된 일부 대시보드가 prometheus쪽의 alertmanager지표를 활용함. false해도 무방.
-# grafana에서 알람기능 사용시, prometheus의 일반 지표가 직접 활용되는 것이 더 일반적이긴 함
+# 기본 탑재된 Alert 대시보드가 prometheus에 저장된 alertmanager지표를 활용함. # false해도 무방.
+# grafana 자체알람기능 사용시, alertmanager와 무관하게 prometheus의 일반 지표를 활용하는 것이 더 일반적
 alertmanager:
   enabled: true
 
@@ -33,7 +33,6 @@ prometheus:
     type: LoadBalancer
   prometheusSpec:
     nodeSelector: {}
-    externalUrl: "promethues.test.wai"
     retention: 7d
     additionalScrapeConfigs: []
       # Prometheus가 exporter를 참조할 때 ServiceMonitor를 쓰지않고 수동연결하는 경우 설정
