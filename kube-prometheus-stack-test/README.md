@@ -142,10 +142,13 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
   - => 이거는 datasource로 prometheus의 alertmanager를 추가하기 위한 용도다.
   - => Grafana에서 AlertManager를 Datasource로 추가하는 것은, Alertmanager에서 생성된 알림을 Grafana 대시보드에서 시각화하고 관리하기 위함(threshold를 넘어선 횟수, 내역 등 체크)
 - 단점
-  - 멀티 클러스터를 모니터링할 때는 개별 네트워크 인가가 필요
-  - 클러스터마다 설정도 달라질 수 있기 떄문에 관리가 불편해질 수 있음
+  - UI에서 규칙편집이 안됨. 그냥 현 상황 조회하는 정도만 가능.
+  - 고도화된 모니터링이 필요없다면 관리비용만 늘어남
+  - 멀티 클러스터를 모니터링할 때는 개별 네트워크 인가가 필요할 수 있음
+    - 단, AlertManager의 모든 지표는 Prometheus가 수집가능
+  - 클러스터마다 설정도 달라질 수 있기 때문에 관리가 불편해질 수 있음
 - kps차트에서 alert 관련기능은 모두 prometheus alertmanager의 rule을 설정하는 방식으로 관리되는 것 같다.
-- grafana의 alert 기능을 쓰고 싶으면, subchart value를 확인하자
+- grafana의 alert 기능을 쓰고 싶으면, grafana의 subchart value or grafana ui를 활용
 
 ## EKS 에서 권한(Role)문제
 
