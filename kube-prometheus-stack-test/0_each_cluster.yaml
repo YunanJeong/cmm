@@ -52,14 +52,16 @@ prometheus:
       #   static_configs:
       #     - targets:
       #       - test-kafka-jmx-metrics.default.svc.cluster.local:5556
+  
+  # ingress 대신 그냥 ExternalIP:Port로 접속권장. 개별 클러스터마다 URL과 ingress controller 관리하기 번거로움
   ingress:
     enabled: false
-    # ingressClassName: nginx
+    # ingressClassName: traefik  # k3s default ingress controller
     annotations: {}
     labels: {}
     # servicePort: 8081
-    hosts: []
-    #   - prometheus.domain.com
+    hosts: # []
+      - prometheus.test.wai
     paths: []
     # - /
     # pathType: ImplementationSpecific
