@@ -162,3 +162,18 @@ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-ad
 kubectl create clusterrolebinding yunan-cluster-admin-binding --clusterrole=cluster-admin --user=yunan_all
 # --set "prometheus.prometheusSpec.nodeSelector.wai-eks/noderole=home" \
 ```
+
+## PV 삭제 안됨(STATUS=TERMINATING에서 멈춤 현상)
+
+- pv는 namespace가 상관없지만, pvc는 헬름 설치시 선택한 namespace에 있다.
+- pvc를 삭제해야 한다.
+
+```sh
+kubectl delte pvc {PVC_NAME} -n {NAMESPACE}
+```
+
+- 그래도 안되는 경우 다음 명령어를 쓰면 pv 삭제 가능
+
+```sh
+kubectl patch pv {PV이름} -p '{"metadata":{"finalizers":null}}'
+```
