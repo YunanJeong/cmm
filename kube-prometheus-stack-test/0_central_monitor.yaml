@@ -346,13 +346,12 @@ grafana:
     rules.yaml:
       # AlertRule 프로비저닝 예시
       # 특정 Prometheus를 통해, 메모리 및 스토리지 점유율이 일정수치 이상인 노드를 검출
-      # AlertRule은 UI작업이 훨씬 편하고, Json Export 가능
-      # 단, Alert는 UI에서 import 불가
+      # AlertRule은 UI작업이 훨씬 편하고, Json Export 가능, 단, UI에서 import 불가능
       # Json으로 AlertRule을 등록하려면,rules.yaml 형식으로 프로비저닝 하거나 grafana server REST API 사용해야 함
       apiVersion: 1
       groups:
         - orgId: 1
-          name: memory_check_every_1m
+          name: node_check_every_1m
           folder: my-sample-rules
           interval: 1m
           rules:
@@ -390,12 +389,6 @@ grafana:
               labels:
                 memory: warning
               isPaused: false
-          
-        - orgId: 1
-          name: storage_check_every_1m
-          folder: my-sample-rules
-          interval: 1m
-          rules:
             - uid: my-storage-uid
               title: my-storage
               condition: A
@@ -430,7 +423,6 @@ grafana:
               labels:
                 storage: warning
               isPaused: false
-
 
     contactpoints.yaml:
       secret:
