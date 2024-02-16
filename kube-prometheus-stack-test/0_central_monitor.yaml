@@ -290,6 +290,8 @@ grafana:
     type: prometheus
     url: http://${MY_EKS_DNS}:9090  # http/https 구분 기입 필요  # Public IP 노출주의
     version: 1
+    labels:
+      cluster: eks
   - name: kr-rag-prometheus
     access: proxy
     basicAuth: false
@@ -300,6 +302,8 @@ grafana:
     type: prometheus
     url: http://172.31.58.245:9090  # http/https 구분 기입 필요  # Public IP 노출주의
     version: 1
+    labels:
+      cluster: kr-mum
   - name: kr-mum-prometheus
     access: proxy
     basicAuth: false
@@ -310,6 +314,8 @@ grafana:
     type: prometheus
     url: http://172.31.4.123:9090  # http/https 구분 기입 필요  # Public IP 노출주의
     version: 1
+    labels:
+      cluster: kr-mum
   # - name: prometheus-sample
   #   access: proxy
   #   basicAuth: true
