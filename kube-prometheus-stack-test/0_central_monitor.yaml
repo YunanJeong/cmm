@@ -54,7 +54,7 @@ grafana:
   persistence:
     # Type of persistence (pvc or statefulset)
     type: statefulset
-    enabled: true
+    enabled: false
     # storageClassName: default
     accessModes:
       - ReadWriteOnce
@@ -344,50 +344,91 @@ grafana:
   ##
   alerting: # {}
     rules.yaml:
+      # AlertRule 프로비저닝 예시
+      # 특정 Prometheus를 통해, 메모리 및 스토리지 점유율이 일정수치 이상인 노드를 검출
       apiVersion: 1
       groups:
         - orgId: 1
-          name: 'my_provision_rule_group'
-          folder: my_provision_rule_folder
-          interval: 60s
+          name: memory_check_every_1m
+          folder: my-sample-rules
+          interval: 1m
           rules:
-            - uid: my_id_1
-              title: memory_over
+            - uid: my-memory-uid
+              title: my-memory
               condition: A
               data:
                 - refId: A
-                  datasourceUid: '-100'
+                  relativeTimeRange:
+                    from: 600
+                    to: 0
                   model:
-                    conditions:
-                      - evaluator:
-                          params:
-                            - 3
-                          type: gt
-                        operator:
-                          type: and
-                        query:
-                          params:
-                            - A
-                        reducer:
-                          type: last
-                        type: query
                     datasource:
-                      type: __expr__
-                      uid: '-100'
-                    expression: 100 * (1 - ((node_memory_MemFree_bytes{job="node-exporter"} + node_memory_Cached_bytes{job="node-exporter"} + node_memory_Buffers_bytes{job="node-exporter"}) / node_memory_MemTotal_bytes{job="node-exporter"})) > 85
+                        type: prometheus
+                    disableTextWrap: false
+                    editorMode: code
+                    exemplar: false
+                    # 메모리 85% 초과하는 노드 검색 Prometheus 쿼리
+                    expr: 100 * (1 - ((node_memory_MemFree_bytes{job="node-exporter"} + node_memory_Cached_bytes{job="node-exporter"} + node_memory_Buffers_bytes{job="node-exporter"}) / node_memory_MemTotal_bytes{job="node-exporter"})) > 85
+                    format: time_series
+                    fullMetaSearch: false
+                    includeNullMetadata: true
+                    instant: true
                     intervalMs: 1000
+                    legendFormat: __auto
                     maxDataPoints: 43200
+                    range: false
                     refId: A
-                    type: math
-              dashboardUid: my_dashboard
-              panelId: 123
-              noDataState: Alerting
-              for: 60s
+                    useBackend: false
+              noDataState: NoData
+              execErrState: Error
+              for: 5m
               annotations:
-                some_key: some_value
+                description: my-memory-is-dangerous
               labels:
-                team: sre_team_1
-                
+                memory: warning
+              isPaused: false
+          
+        - orgId: 1
+          name: storage_check_every_1m
+          folder: my-sample-rules
+          interval: 1m
+          rules:
+            - uid: my-storage-uid
+              title: my-storage
+              condition: A
+              data:
+                - refId: A
+                  relativeTimeRange:
+                    from: 600
+                    to: 0
+                  model:
+                    datasource:
+                        type: prometheus
+                    disableTextWrap: false
+                    editorMode: code
+                    exemplar: false
+                    # 스토리지 85% 초과하는 노드 검색 Prometheus 쿼리
+                    expr: 100 * (1 - (node_filesystem_free_bytes{job="node-exporter"} / node_filesystem_size_bytes{job="node-exporter"})) > 85
+                    format: time_series
+                    fullMetaSearch: false
+                    includeNullMetadata: true
+                    instant: true
+                    intervalMs: 1000
+                    legendFormat: __auto
+                    maxDataPoints: 43200
+                    range: false
+                    refId: A
+                    useBackend: false
+              noDataState: NoData
+              execErrState: Error
+              for: 5m
+              annotations:
+                description: my-storage-is-dangerous
+              labels:
+                storage: warning
+              isPaused: false
+
+
     contactpoints.yaml:
       secret:
         apiVersion: 1
