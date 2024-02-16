@@ -282,9 +282,7 @@ grafana:
   # EKS 테스트 # 맨 처음 기술된게 대시보드에서 default선택됨
   - name: eks-prometheus
     access: proxy
-    basicAuth: true
-    basicAuthPassword: pass
-    basicAuthUser: user
+    basicAuth: false
     editable: false
     jsonData:
         tlsSkipVerify: true
@@ -294,24 +292,20 @@ grafana:
     version: 1
   - name: kr-rag-prometheus
     access: proxy
-    basicAuth: true
-    basicAuthPassword: pass
-    basicAuthUser: daco
+    basicAuth: false
     editable: false
     jsonData:
-        tlsSkipVerify: true
+      tlsSkipVerify: true
     orgId: 1
     type: prometheus
     url: http://172.31.58.245:9090  # http/https 구분 기입 필요  # Public IP 노출주의
     version: 1
   - name: kr-mum-prometheus
     access: proxy
-    basicAuth: true
-    basicAuthPassword: pass
-    basicAuthUser: user
+    basicAuth: false
     editable: false
     jsonData:
-        tlsSkipVerify: true
+      tlsSkipVerify: true
     orgId: 1
     type: prometheus
     url: http://172.31.4.123:9090  # http/https 구분 기입 필요  # Public IP 노출주의
