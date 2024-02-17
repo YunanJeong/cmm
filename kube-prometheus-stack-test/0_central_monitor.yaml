@@ -436,6 +436,15 @@ grafana:
                 settings:
                   url: ${TEAMS_WEBHOOK}
                 disableResolveMessage: false
+          - orgId: 1
+            name: my-line-channel
+            receivers:
+              - uid: line-channel
+                type: LINE
+                settings:
+                  token: ${LINE_TOKEN}
+                disableResolveMessage: false
+
   ## Configure notifiers
   ## ref: http://docs.grafana.org/administration/provisioning/#alert-notification-channels
   ##
