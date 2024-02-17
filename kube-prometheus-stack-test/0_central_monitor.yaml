@@ -122,7 +122,7 @@ grafana:
      providers:
       - name: 'my-default'
         orgId: 1
-        folder: 'all-cluster-monitoring'
+        folder: 'multi-cluster-node-exporter'
         type: file
         disableDeletion: true
         editable: false
@@ -352,7 +352,7 @@ grafana:
       groups:
         - orgId: 1
           name: node_check_every_1m
-          folder: my-sample-rules
+          folder: my-sample-alerts
           interval: 1m
           rules:
             - uid: my-memory-uid
@@ -429,7 +429,7 @@ grafana:
         apiVersion: 1
         contactPoints:
           - orgId: 1
-            name: teams-channel-my-provision
+            name: my-teams-channel
             receivers:
               - uid: teams-channel
                 type: teams
@@ -439,19 +439,19 @@ grafana:
   ## Configure notifiers
   ## ref: http://docs.grafana.org/administration/provisioning/#alert-notification-channels
   ##
-  notifiers: # {}
-   notifiers.yaml:
-     notifiers:
-     - name: email-notifier
-       type: email
-       uid: email1
-       # either:
-       org_id: 1
-       # or
-       org_name: Main Org.
-       is_default: true
-       settings:
-         addresses: an_email_address@example.com
+  notifiers: {}
+  #  notifiers.yaml:
+  #    notifiers:
+  #    - name: email-notifier
+  #      type: email
+  #      uid: email1
+  #      # either:
+  #      org_id: 1
+  #      # or
+  #      org_name: Main Org.
+  #      is_default: true
+  #      settings:
+  #        addresses: an_email_address@example.com
   #    delete_notifiers:
 
 
