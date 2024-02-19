@@ -1,9 +1,0 @@
-dependencies:
-- name: grafana
-  repository: https://charts.bitnami.com/bitnami
-  version: 9.1.0
-- name: prometheus
-  repository: https://charts.bitnami.com/bitnami
-  version: 0.2.0
-digest: sha256:cca25100fcc0261bb4606ec60641b3d88ef9264fe9aca77e86220502da46cbd2
-generated: "2023-08-30T15:50:17.562613646+09:00"
