@@ -175,8 +175,8 @@ grafana:
     #     token: ''
     #     b64content: true
     #   local-dashboard-gitlab:
-    #     url: https://example.com/repository/test-gitlab.json
-    #     gitlabToken: ''
+    #     url: https://example.com/repository/test-gitlab.json  # gitlab raw경로 형식 참고: https://docs.gitlab.com/ee/api/repository_files.html#get-raw-file-from-repository
+    #     gitlabToken: ''                                       # ACCESS-TOKEN에서 read-repository 권한범위 부여
     #   local-dashboard-bitbucket:
     #     url: https://example.com/repository/test-bitbucket.json
     #     bearerToken: ''
@@ -387,8 +387,8 @@ grafana:
               annotations:
                 description: my-memory-is-dangerous
               labels:
-                memory: warning
-              isPaused: false
+                memory: warning-sample
+              isPaused: true  # 정지
             - uid: my-storage-uid
               title: my-storage
               condition: A
@@ -404,7 +404,7 @@ grafana:
                     editorMode: code
                     exemplar: false
                     # 스토리지 85% 초과하는 노드 검색 Prometheus 쿼리
-                    expr: 100 * (1 - (node_filesystem_free_bytes{job="node-exporter"} / node_filesystem_size_bytes{job="node-exporter"})) > 85
+                    expr: 100 * (1 - (node_filesystem_free_bytes{job="node-exporter",device="/dev/root"} / node_filesystem_size_bytes{job="node-exporter",device="/dev/root"}))  > 85
                     format: time_series
                     fullMetaSearch: false
                     includeNullMetadata: true
@@ -421,8 +421,8 @@ grafana:
               annotations:
                 description: my-storage-is-dangerous
               labels:
-                storage: warning
-              isPaused: false
+                storage: warning-sample
+              isPaused: true  # 정지
 
     contactpoints.yaml:
       secret:
