@@ -14,6 +14,11 @@
 ```sh
 # Add Repo
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm update
+
+# (오프라인 환경 등)아카이브 파일 필요시
+helm pull prometheus-community/kube-prometheus-stack --version 55.8.3
+
 # 기본 설치
 helm install prostack prometheus-community/kube-prometheus-stack --version 55.8.3
 # value 포함 후 monitor ns에설치
