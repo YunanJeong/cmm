@@ -1,4 +1,6 @@
-# grafana-test
+# MMM: Multi-cluster Metrics Monitroing
+
+Centralized Monitoring for Multi-cluster Metrics
 
 그라파나 테스트. helm으로 커스텀 대시보드까지 빠르게 이식 가능한 구조 만들기
 
