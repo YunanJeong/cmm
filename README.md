@@ -2,7 +2,15 @@
 
 여러 클러스터를 한군데서 모니터링 한다.
 
-## 목표
+## 추가목표
+
+관리 및 설치 편의를 위해 다음을 목표로 한다.
+
+- 가급적 기존 오픈소스 헬름차트 활용
+- 커스텀 차트를 만들지않고, value파일 만으로 모든 설정 수행
+- 대시보드 등 커스텀 요소들은 `json을 value파일에 포함`, `온라인 기반 레포지토리`, `Persistent Volume` 등의 옵션 활용
+  - root경로의 파일을 가져오는 extraVolume은 미사용 (한줄설치!)
+  - 커스텀 차트를 만들지 않으므로, template을 직접 편집하지 않고, 필요시 ConfigMap활용
 
 ## [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=install)
 
