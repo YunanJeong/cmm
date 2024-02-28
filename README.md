@@ -65,6 +65,9 @@ helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3
 helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n platform -f 0_each_cluster.yaml \
 --set "kubernetesServiceMonitors.enabled=true" \
 --set "kubeStateMetrics.enabled=true"
+
+# WSL 실행시 추가옵션 (WSL, 도커데스크탑 등 일부환경에서 node exporter만 crash 나는 경우 사용)
+--set "prometheus-node-exporter.hostRootFsMount.enabled=false"
 ```
 
 ### jmx, kafka exporter 테스트용 앱
