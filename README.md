@@ -66,7 +66,7 @@ helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3
 --set "kubernetesServiceMonitors.enabled=true" \
 --set "kubeStateMetrics.enabled=true"
 
-# WSL 실행시 추가옵션 (WSL, 도커데스크탑 등 일부환경에서 node exporter만 crash 나는 경우 사용)
+# WSL에서 실행 시 추가옵션 (WSL, 도커데탑 등 일부 환경에서 node exporter 실행 실패시에만 사용)
 --set "prometheus-node-exporter.hostRootFsMount.enabled=false"
 ```
 
