@@ -1,27 +1,25 @@
 # CMM: Centralized Monitoring for Multi-clusters
 
-여러 클러스터를 한군데서 모니터링 한다.
+여러 클러스터를 한군데서 모니터링
 
 ## 추가목표
 
 관리 및 설치 편의를 위해 다음을 목표로 한다.
 
-- 가급적 기존 오픈소스 헬름차트 활용
-- 커스텀 차트를 만들지않고, value파일 만으로 모든 설정 수행
-- 대시보드 등 커스텀 요소들은 `json을 value파일에 포함`, `온라인 기반 레포지토리`, `Persistent Volume` 등의 옵션 활용
+- 기존 오픈소스 헬름차트 활용
+- 커스텀 헬름차트를 만들지 않고, value파일 만으로 해결 (helm template 편집 X)
+- 대시보드 등 커스텀 요소 관리방법
+  - json을 value파일에 포함하여 프로비저닝
+  - 온라인 기반 레포지토리에서 다운로드하여 프로비저닝
+  - 프로비저닝 외 커스텀 요소는 Persistent Volume 활용
   - root경로의 파일을 가져오는 extraVolume은 미사용 (한줄설치!)
-  - 커스텀 차트를 만들지 않으므로, template을 직접 편집하지 않고, 필요시 ConfigMap활용
+  - 커스텀 차트를 만들지 않으므로, template을 직접 편집하지 않고, 필요시 value파일에서 ConfigMap활용
 
 ## [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=install)
 
-- node-exporter, promethues, promethues-operator, grafana로 구성된 차트다.
-- 사람들이 많이 쓰는 조합이기 때문에 이미 통합 차트로 만들어진 사례가 있으며, 그 중에서도 promethues 커뮤니티에서 나온 kube-promethues-stack이 종종 사용된다.
-  - 근데 설정이 좀 과하긴하다. value파일 4천라인쯤 됨
-- grafana에서 출시한 k8s-monitoring 차트도 있는데, 천 라인쯤 됨
-  - 모든 기능을 커스텀할 게 아니라면 차라리 따로따로 되있는걸 커스텀으로 합치는게 더 편할 것 같기도..
-  - 일단 좀 봐야 알겠다.
-
-- 구 차트이름이 prometheus-opeator였으나, 변경됨. 현재는 일부 구성 요소를 prometheus-operator라고 부름
+- node-exporter, promethues, promethues-operator, thanos, grafana로 구성된 차트
+- 자주 쓰이는 조합이라 비슷한 차트가 이미 공유되고 있으며, 그 중에서도 promethues 커뮤니티에서 나온 kube-promethues-stack이 가장 널리 사용된다.
+- 구 차트이름이 prometheus-operator였으나, 현재는 일부 구성 요소만 prometheus-operator라고 부름
 
 ## 단일 클러스터 내 모니터링
 
@@ -53,20 +51,21 @@ envsubst < central_monitor.yaml | helm upgrade monitor prometheus-community/kube
 ## 개별 클러스터 설정
 
 ```sh
-# each cluster exporter and prometheus 
-helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f each_cluster.yaml 
+# Install exporter and prometheus 
+helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -f each_cluster.yaml -n monitor 
 
 # prometheus nodeSelector 지정 예시
-helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f each_cluster.yaml \
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -f each_cluster.yaml -n monitor \
 --set "prometheus.prometheusSpec.nodeSelector.kr-mum/noderole=kafka" \
 --set "prometheusOperator.nodeSelector.kr-mum/noderole=kafka"
 
-# kube metric 켜기 (EKS)
-helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n platform -f 0_each_cluster.yaml \
+# kube metric 수집 활성화 예시
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -f each_cluster.yaml -n monitor \
 --set "kubernetesServiceMonitors.enabled=true" \
 --set "kubeStateMetrics.enabled=true"
 
 # WSL에서 실행 시 추가옵션 (WSL, 도커데탑 등 일부 환경에서 node exporter 실행 실패시에만 사용)
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -f each_cluster.yaml -n monitor \
 --set "prometheus-node-exporter.hostRootFsMount.enabled=false"
 ```
 
@@ -94,29 +93,20 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 ## 메모
 
 - export-promethues-grafana를 하나의 stack으로 묶어 배포되는 헬름차트들이 여럿 있음
-- 대부분, 단일 클러스터 내에서 사용하는 것을 가정하여 만들어짐
-- 멀티클러스터에 대해 Centralized 모니터링을 하려면 수정이 필요
-- prometheus를 각 서비스 클러스터에 둘 것인가, 중앙모니터링 서버에 둘 것인가.
-  - 서비스에 두면 메모리 부담, 중앙에 두면 더 복잡한 설정 필요
-- 다른 Centralized 모니터링 예시들이 있음
-  - 보통은 각 서비스, 각 클러스터에 prometheus를 배치시키고, 중앙에는 Thanos라는 툴을 둠
-  - prometheus는 클러스터링을 지원하지않는데, 여러 promethues를 하나의 앱처럼 관리하기 위한 툴이 Thanos임
+- 대부분 단일 클러스터 내 사용을 가정하여 만들어짐
+- 멀티클러스터에 대해 Centralized 모니터링을 하려면 수정 필요
+
+### prometheus를 각 서비스 클러스터에 둘 것인가, 중앙모니터링 서버에 둘 것인가.
+
+- 서비스에 두면 메모리 부담, 중앙에 두면 더 복잡한 설정 필요
+
+### 다른 Centralized 모니터링 예시들이 있음
+
+- 보통은 각 서비스, 각 클러스터에 prometheus를 배치하고, 중앙에는 Thanos라는 툴을 둠
+- prometheus는 클러스터링을 지원하지않는데, 여러 promethues를 하나의 앱처럼 관리하기 위한 툴이 Thanos임
 - 중앙에 단일 prometheus 두고 가벼운 모니터링시스템으로 쓰다가 나중에 필요할 때 업글할까? 아니면 처음부터 체계적으로 구축할까도 고민. 급하지는 않은데...
 - 하나의 Prometheus에 여러 grafana가 접근가능할 듯한데, 굳이 Thanos가 필요할까???
 - 하나의 exporter에 여러 prometheus가 붙을 수 있나? => 이거 포트가 점유되어있다고 안될거같은데...
-
-## 주의
-
-- WSL에서 configmap을 읽지 못하는 버그가 있음.
-
-- EC2에서는 정상실행되나, 껐다 켰다 반복시 grafana Pod에서 동일한 failed Event 발생
-
-- volume 관련 설정시 비슷한 에러가 발생
-  - 이 땐, k3s를 재시작하면 해결됨
-
-```sh
-"MountVolume.SetUp failed for volume ...
-```
 
 ## Service Monitor
 
