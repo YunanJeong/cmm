@@ -69,34 +69,13 @@ helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3
 --set "prometheus-node-exporter.hostRootFsMount.enabled=false"
 ```
 
-### jmx, kafka exporter 테스트용 앱
-
-```sh
-helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/skafka-2.0.3.tgz \
--f https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/kraft-multi.yaml \
---set "kafka.externalAccess.autoDiscovery.enabled=false" \
---set "kafka.externalAccess.controller.service.nodePorts={30003,30004,30005}" \
---set "kafka.metrics.kafka.enabled=true" \
---set "kafka.metrics.jmx.enabled=true"
-
-helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/skafka-2.0.3.tgz \
--f https://github.com/YunanJeong/simple-kafka-deploy/releases/download/v2.0.3/kraft-multi.yaml \
---set "kafka.externalAccess.autoDiscovery.enabled=false" \
---set "kafka.externalAccess.controller.service.nodePorts={30003,30004,30005}" \
---set "kafka.metrics.kafka.enabled=true" \
---set "kafka.metrics.jmx.enabled=true" \
---set "kafka.metrics.serviceMonitor.enabled=true" \
---set "kafka.metrics.serviceMonitor.namespace=monitor"
-
-```
-
 ## 메모
 
 - export-promethues-grafana를 하나의 stack으로 묶어 배포되는 헬름차트들이 여럿 있음
 - 대부분 단일 클러스터 내 사용을 가정하여 만들어짐
 - 멀티클러스터에 대해 Centralized 모니터링을 하려면 수정 필요
 
-### prometheus를 각 서비스 클러스터에 둘 것인가, 중앙모니터링 서버에 둘 것인가.
+### prometheus를 각 서비스 클러스터에 둘 것인가, 중앙모니터링 서버에 둘 것인가?
 
 - 서비스에 두면 메모리 부담, 중앙에 두면 더 복잡한 설정 필요
 
@@ -108,7 +87,7 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 - 하나의 Prometheus에 여러 grafana가 접근가능할 듯한데, 굳이 Thanos가 필요할까???
 - 하나의 exporter에 여러 prometheus가 붙을 수 있나? => 이거 포트가 점유되어있다고 안될거같은데...
 
-## Service Monitor
+### Service Monitor
 
 - prometheus-opreator에서 제공하는 CRD
 - Service Monitor는 Prometheus가 Kubernetes 서비스를 자동으로 발견하고, 이 서비스들이 노출하는 메트릭을 수집할 수 있게 해준다.
@@ -118,7 +97,7 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 - 이 헬름 차트 외에도 prometheus 관련 기능을 제공하는 차트에서 Service Monitor 옵션이 종종 등장한다.
 - 다시 읽어보기: [Service Monitor 컨셉, 쓰는 이유, 장점](https://jerryljh.medium.com/prometheus-servicemonitor-98ccca35a13e)
 
-## Sidecar
+### Sidecar
 
 - 메인컨테이너와 함께 동작하는 보조컨테이너(helper container)를 의미
 - 메인컨테이너 앱의 주 기능 외에 로그처리, 모니터링, 보안, 프록시, 파일 시스템 관리 등의 용도로 사용
@@ -159,7 +138,9 @@ helm install test https://github.com/YunanJeong/simple-kafka-deploy/releases/dow
 - kps차트에서 alert 관련기능은 모두 prometheus alertmanager의 rule을 설정하는 방식으로 관리되는 것 같다.
 - grafana의 alert 기능을 쓰고 싶으면, grafana의 subchart value or grafana ui를 활용
 
-## EKS 에서 권한(Role)문제
+## 기타 관련 이슈 해결
+
+### EKS 에서 권한(Role)문제
 
 - 권한 관련 문제는 환경 제공자마다 다르게 나타나는 것 같다.
 - GKE는 권한 최적화해서 해결하는 방법이 있다는 것 같은데, EKS는 그냥 관리자 권한 전체 부여해야할듯
@@ -172,7 +153,7 @@ kubectl create clusterrolebinding yunan-cluster-admin-binding --clusterrole=clus
 # --set "prometheus.prometheusSpec.nodeSelector.wai-eks/noderole=home" \
 ```
 
-## PV 삭제 안됨(STATUS=TERMINATING에서 멈춤 현상)
+### PV 삭제 안됨(STATUS=TERMINATING에서 멈춤 현상)
 
 - pv는 namespace가 상관없지만, pvc는 헬름 설치시 선택한 namespace에 있다.
 - pvc를 삭제해야 한다.
