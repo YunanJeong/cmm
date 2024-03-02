@@ -2,35 +2,33 @@
 
 여러 클러스터를 한군데서 모니터링
 
+헬름차트 kube-prometheus-stack의 value를 적절히 수정하여 구현되었다.
+
+각 클러스터에 Prometheus와 node-exporter가 배치된다. exporter는 daemonset에 의해 노드 별 하나씩 설치된다.
+
+별도 중앙 노드에 grafana가 배치된다. grafana는 datasource로 각 클러스터의 prometheus를 참조한다.
+
+클러스터 규모가 클 경우 Prometheus의 부하가 과해질 수 있다. 이 때는 중앙 노드에 Thanos를 추가 설치해야 한다.(현재는 미설정)
+
 ## 추가목표
 
 관리 및 설치 편의를 위해 다음을 목표로 한다.
 
-- 기존 오픈소스 헬름차트 활용
-- 커스텀 헬름차트를 만들지 않고, value파일 만으로 해결 (helm template 편집 X)
+- 가급적 기존 헬름차트의 value 수정 만으로 해결
+- 커스텀 차트 생성 X, 헬름 template 편집 X
 - 대시보드 등 커스텀 요소 관리방법
   - json을 value파일에 포함하여 프로비저닝
   - 온라인 기반 레포지토리에서 다운로드하여 프로비저닝
   - 프로비저닝 외 커스텀 요소는 Persistent Volume 활용
-  - root경로의 파일을 가져오는 extraVolume은 미사용 (한줄설치!)
-  - 커스텀 차트를 만들지 않으므로, template을 직접 편집하지 않고, 필요시 value파일에서 ConfigMap활용
+  - root경로의 파일을 가져오는 extraVolume은 미사용 (설치시 번거로움)
+  - value 파일에서 ConfigMap 생성가능하나, tpl함수와 json 문법이 충돌하여 사용이 사실상 힘듦
 
-## [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=install)
-
-- node-exporter, promethues, promethues-operator, thanos, grafana로 구성된 차트
-- 자주 쓰이는 조합이라 비슷한 차트가 이미 공유되고 있으며, 그 중에서도 promethues 커뮤니티에서 나온 kube-promethues-stack이 가장 널리 사용된다.
-- 구 차트이름이 prometheus-operator였으나, 현재는 일부 구성 요소만 prometheus-operator라고 부름
-
-## 단일 클러스터 내 모니터링
+## 사전 설정
 
 ```sh
 # Add Repo
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm update
-
-# 기본 설치
-helm install prostack prometheus-community/kube-prometheus-stack --version 55.8.3
-
 
 # (오프라인 환경 등)아카이브 파일 필요시
 helm pull prometheus-community/kube-prometheus-stack --version 55.8.3
@@ -41,11 +39,9 @@ helm pull prometheus-community/kube-prometheus-stack --version 55.8.3
 ```sh
 # grafana only
 helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f central_monitor.yaml
-helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f central_monitor.yaml
 
 # grafana only (환경변수 사용)
 envsubst < central_monitor.yaml | helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f -
-envsubst < central_monitor.yaml | helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f -
 ```
 
 ## 개별 클러스터 설정
@@ -69,23 +65,15 @@ helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3
 --set "prometheus-node-exporter.hostRootFsMount.enabled=false"
 ```
 
-## 메모
+## 용어
 
-- export-promethues-grafana를 하나의 stack으로 묶어 배포되는 헬름차트들이 여럿 있음
-- 대부분 단일 클러스터 내 사용을 가정하여 만들어짐
-- 멀티클러스터에 대해 Centralized 모니터링을 하려면 수정 필요
+### [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=install)
 
-### prometheus를 각 서비스 클러스터에 둘 것인가, 중앙모니터링 서버에 둘 것인가?
-
-- 서비스에 두면 메모리 부담, 중앙에 두면 더 복잡한 설정 필요
-
-### 다른 Centralized 모니터링 예시들이 있음
-
-- 보통은 각 서비스, 각 클러스터에 prometheus를 배치하고, 중앙에는 Thanos라는 툴을 둠
-- prometheus는 클러스터링을 지원하지않는데, 여러 promethues를 하나의 앱처럼 관리하기 위한 툴이 Thanos임
-- 중앙에 단일 prometheus 두고 가벼운 모니터링시스템으로 쓰다가 나중에 필요할 때 업글할까? 아니면 처음부터 체계적으로 구축할까도 고민. 급하지는 않은데...
-- 하나의 Prometheus에 여러 grafana가 접근가능할 듯한데, 굳이 Thanos가 필요할까???
-- 하나의 exporter에 여러 prometheus가 붙을 수 있나? => 이거 포트가 점유되어있다고 안될거같은데...
+- node-exporter, promethues, promethues-operator, thanos, grafana로 구성된 차트
+- 자주 쓰이는 조합이라 비슷한 차트가 이미 공유되고 있으며, 그 중에서도 promethues 커뮤니티에서 나온 kube-promethues-stack이 가장 널리 사용된다.
+- 구 차트이름이 prometheus-operator였으나, 현재는 일부 구성 요소만 prometheus-operator라고 부름
+- 이러한 차트 대부분은 단일 클러스터 내 사용을 가정하여 만들어짐
+- 기존 차트로 멀티클러스터에 대해 Centralized 모니터링을 하려면 수정 필요
 
 ### Service Monitor
 
@@ -138,7 +126,19 @@ helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3
 - kps차트에서 alert 관련기능은 모두 prometheus alertmanager의 rule을 설정하는 방식으로 관리되는 것 같다.
 - grafana의 alert 기능을 쓰고 싶으면, grafana의 subchart value or grafana ui를 활용
 
-## 기타 관련 이슈 해결
+## 기타 관련 이슈
+
+### prometheus를 각 서비스 클러스터에 둘 것인가, 중앙모니터링 서버에 둘 것인가?
+
+- 서비스에 두면 메모리 부담, 중앙에 두면 더 복잡한 설정 필요
+
+### 다른 Centralized 모니터링 사례
+
+- 보통은 각 서비스, 각 클러스터에 prometheus를 배치하고, 중앙에는 Thanos라는 툴을 둠
+- prometheus는 클러스터링을 지원하지않는데, 여러 promethues를 하나의 앱처럼 관리하기 위한 툴이 Thanos임
+- 중앙에 단일 prometheus 두고 가벼운 모니터링시스템으로 쓰다가 나중에 필요할 때 업글할까? 아니면 처음부터 체계적으로 구축할까도 고민. 급하지는 않은데...
+- 하나의 Prometheus에 여러 grafana가 접근가능할 듯한데, 굳이 Thanos가 필요할까???
+- 하나의 exporter에 여러 prometheus가 붙을 수 있나? => 이거 포트가 점유되어있다고 안될거같은데...
 
 ### EKS 에서 권한(Role)문제
 
