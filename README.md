@@ -2,13 +2,12 @@
 
 여러 클러스터를 한군데서 모니터링
 
-헬름차트 kube-prometheus-stack의 value를 적절히 수정하여 구현되었다.
+헬름차트 kube-prometheus-stack의 value를 적절히 수정하여 구현
 
-각 클러스터에 Prometheus와 node-exporter가 배치된다. exporter는 daemonset에 의해 노드 별 하나씩 설치된다.
-
-별도 중앙 노드에 grafana가 배치된다. grafana는 datasource로 각 클러스터의 prometheus를 참조한다.
-
-클러스터 규모가 클 경우 Prometheus의 부하가 과해질 수 있다. 이 때는 중앙 노드에 Thanos를 추가 설치해야 한다.(현재는 미설정)
+- node-exporter: 모니터링 대상 클러스터에서 helm install시, daemonset에 의해 개별 노드마다 하나씩 배치됨
+- Prometheus: 모니터링 대상 클러스터마다 설치
+- grafana: 중앙 노드에 설치되고, 각 클러스터의 prometheus를 datasource로서 참조
+- thanos: 클러스터 규모가 클 경우 Prometheus의 부하가 과해질 수 있다. 이 때는 중앙 노드에 Thanos를 추가 설치해야 한다.(현재는 미설정)
 
 ## 추가목표
 
