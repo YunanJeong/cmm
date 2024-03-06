@@ -279,43 +279,47 @@ grafana:
   ## ref: http://docs.grafana.org/administration/provisioning/#datasources
   # grafana.sidecar.datasources.enabled=true 필요
   additionalDataSources:  # []
-  # EKS 테스트 # 맨 처음 기술된게 대시보드에서 default선택됨
-  - name: eks-prometheus
-    access: proxy
-    basicAuth: false
-    editable: false
-    jsonData:
+    # EKS
+    - name: eks-prometheus
+      access: proxy
+      basicAuth: false
+      editable: false
+      jsonData:
+          tlsSkipVerify: true
+      orgId: 1
+      type: prometheus
+      url: http://${MY_EKS_DNS}:9090  # http/https 구분 기입 필요  # Public IP 노출주의
+      version: 1                      # PVC 사용중 일부 파라미터 upgrade시 미반영될 수 있음. version을 변경해주면 정상반영됨.
+      isDefault: true
+    - name: eks-loki
+      access: proxy
+      basicAuth: false
+      editable: false
+      jsonData:
+          tlsSkipVerify: true
+      orgId: 1
+      type: loki
+      url: http://${MY_EKS_LOKI}:3100  # http/https 구분 기입 필요  # Public IP 노출주의
+    - name: kr-rag-prometheus
+      access: proxy
+      basicAuth: false
+      editable: false
+      jsonData:
         tlsSkipVerify: true
-    orgId: 1
-    type: prometheus
-    url: http://${MY_EKS_DNS}:9090  # http/https 구분 기입 필요  # Public IP 노출주의
-    version: 1
-    labels:
-      cluster: eks
-  - name: kr-rag-prometheus
-    access: proxy
-    basicAuth: false
-    editable: false
-    jsonData:
-      tlsSkipVerify: true
-    orgId: 1
-    type: prometheus
-    url: http://172.31.58.245:9090  # http/https 구분 기입 필요  # Public IP 노출주의
-    version: 1
-    labels:
-      cluster: kr-mum
-  - name: kr-mum-prometheus
-    access: proxy
-    basicAuth: false
-    editable: false
-    jsonData:
-      tlsSkipVerify: true
-    orgId: 1
-    type: prometheus
-    url: http://172.31.4.123:9090  # http/https 구분 기입 필요  # Public IP 노출주의
-    version: 1
-    labels:
-      cluster: kr-mum
+      orgId: 1
+      type: prometheus
+      url: http://172.31.58.245:9090  # http/https 구분 기입 필요  # Public IP 노출주의
+      version: 1
+    - name: kr-mum-prometheus
+      access: proxy
+      basicAuth: false
+      editable: false
+      jsonData:
+        tlsSkipVerify: true
+      orgId: 1
+      type: prometheus
+      url: http://172.31.4.123:9090  # http/https 구분 기입 필요  # Public IP 노출주의
+      version: 1
   # - name: prometheus-sample
   #   access: proxy
   #   basicAuth: true
