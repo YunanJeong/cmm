@@ -45,6 +45,10 @@ envsubst < central_monitor.yaml | helm install monitor prometheus-community/kube
 
 ## 개별 클러스터 설정
 
+- 관리 용이성을 위해, 클러스터 별 설정은 모두 동일한 것을 목표로 함
+- 단, `릴리즈명은 개별 고유 이름을 포함`하면 좋음
+  - Grafana alert 등 에서 조회시, 클러스터 별 메트릭 Label이 구분되어 보기 편함
+
 ```sh
 # Install exporter and prometheus 
 helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -f each_cluster.yaml -n monitor 
