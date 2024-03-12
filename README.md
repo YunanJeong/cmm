@@ -96,7 +96,9 @@ helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3
 
 ## Alert
 
-흔히 알려진 AlertManager는 Prometheus의 기능이고, Prometheus 본 앱과 별도로 실행되는 앱이다.
+- 흔히 알려진 AlertManager는 Prometheus의 기능이고, Prometheus 본 앱과 별도로 실행되는 앱이다.
+- CMM은 통합 모니터링을 지향하므로, 중앙 grafana에서 alerting을 설정
+- kps 차트에서 grafana의 alerting 설정은 grafana의 subchart value or grafana ui를 활용
 
 ### grafana alerting 특징
 
@@ -104,36 +106,37 @@ helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3
 - prometheus 외 다양한 datasource에 대해 알람가능
 - 장점
   - 멀티 클러스터 모니터링시 중앙에서 관리가능
-  - 프로비전 뿐 아니라, UI에서도 간단히 설정가능하다.
-  - Alertmanger보다 간소하다고하지만, 메트릭이 '임계값을 초과하고 특정 시간동안 지속'되는 것을 조건으로 알람하는 수준은 충분히 가능. SMTP, MS팀즈 전달도 가능
+  - 프로비저닝 뿐 아니라, UI에서도 간단히 설정가능
+  - Alertmanger보다 간소하지만, 메트릭이 '임계값을 초과하고 특정 시간동안 지속'되는 것을 조건으로 알람하는 수준은 충분히 가능.
+  - SMTP, MS팀즈 전달도 가능
 - 단점
-  - Prometheus AlertManager 보다는 약한 기능
-  - 버전마다 기능이 급변하는 중
-  - 대시보드 패널에 의존적
+  - Prometheus AlertManager 보다는 부족한 기능
+  - 버전마다 기능 급변 중
 
 ### promethues alertmanager 특징
 
 - 장점
-  - 널리 사용되어와서, 안정적
+  - 널리 사용됨, 안정적
   - 여러 메트릭 복합 조건으로 트리거 가능
-  - 특정 시간대만 검사해서 Alert 발생 등 가능
-  - => 근데 왜 kps차트는 grafana쪽 설정에 alertmanager가 있지???
-  - => 이거는 datasource로 prometheus의 alertmanager를 추가하기 위한 용도다.
-  - => Grafana에서 AlertManager를 Datasource로 추가하는 것은, Alertmanager에서 생성된 알림을 Grafana 대시보드에서 시각화하고 관리하기 위함(threshold를 넘어선 횟수, 내역 등 체크)
+  - 특정 시간대만 검사해서 Alert 발생 가능
+    - => 근데 왜 kps차트는 grafana쪽 설정에 alertmanager가 있지???
+    - => 이거는 datasource로 alertmanager를 별도 추가하기 위한 용도다.
+    - => Grafana에서 AlertManager를 Datasource로 추가하는 것은, Alertmanager에서 생성된 알림을 Grafana 대시보드에서 시각화하고 관리하기 위함(threshold를 넘어선 횟수, 내역 등 체크)
 - 단점
-  - UI에서 규칙편집이 안됨. 그냥 현 상황 조회하는 정도만 가능.
+  - UI에서 규칙편집 불가. 그냥 현 상황 조회 정도 가능.
   - 고도화된 모니터링이 필요없다면 관리비용만 늘어남
-  - 멀티 클러스터를 모니터링할 때는 개별 네트워크 인가가 필요할 수 있음
-    - 단, AlertManager의 모든 지표는 Prometheus가 수집가능
-  - 클러스터마다 설정도 달라질 수 있기 때문에 관리가 불편해질 수 있음
-- kps차트에서 alert 관련기능은 모두 prometheus alertmanager의 rule을 설정하는 방식으로 관리되는 것 같다.
-- grafana의 alert 기능을 쓰고 싶으면, grafana의 subchart value or grafana ui를 활용
+  - 멀티 클러스터 모니터링시 수집지표에 따라 개별 클러스터마다 네트워크 인가 필요할 수 있음
+    - 단, AlertManager의 모든 지표는 Prometheus가 수집가능하기 때문에 꼭 필요하진 않음
+  - 클러스터마다 필요한 알람조건, 지표가 다를 수 있어서 관리 불편
+  - kps차트에서 alert 관련기능은 모두 prometheus alertmanager의 rule 프로비저닝으로 관리되는 것 같다.
 
 ## 기타 관련 이슈
 
-### prometheus를 각 서비스 클러스터에 둘 것인가, 중앙모니터링 서버에 둘 것인가?
+### prometheus를 각 클러스터에 둘 것인가, 중앙모니터링 서버에 둘 것인가?
 
 - 서비스에 두면 메모리 부담, 중앙에 두면 더 복잡한 설정 필요
+- 각 클러스터에 두는 것으로 종결
+- 고도화시 중앙엔 Thanos 추가
 
 ### 다른 Centralized 모니터링 사례
 
@@ -145,8 +148,8 @@ helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3
 
 ### EKS 에서 권한(Role)문제
 
-- 권한 관련 문제는 환경 제공자마다 다르게 나타나는 것 같다.
-- GKE는 권한 최적화해서 해결하는 방법이 있다는 것 같은데, EKS는 그냥 관리자 권한 전체 부여해야할듯
+- 권한 이슈는 환경 제공자마다 다를 수 있다.
+- GKE에선 권한 최적화해서 해결하는 방법이 있다는 것 같은데, EKS에선 관리자 권한 전체 부여해야할듯
 - [참고](https://github.com/prometheus-operator/prometheus-operator/issues/1189)
 
 ```sh
