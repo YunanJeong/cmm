@@ -347,6 +347,16 @@ grafana:
   ## ref: http://docs.grafana.org/administration/provisioning/#alerting
   ##
   alerting: # {}
+    delete_rules.yaml:
+      # 기존 Rule의 uid를 지정하여 삭제가능  # uid는 rule json에서 확인가능
+      # 특히, 프로비저닝된 Rule은 이 방법으로만 삭제가능
+      # 삭제방법이 번거로우므로 가급적 신규 rule 생성은 프로비저닝말고 Web UI에서 하자
+      deleteRules:
+        - orgId: 1
+          uid: aa1639d3-00c7-4cde-b12f-xxxxxxxxxxxx
+        - orgId: 1
+          uid: f8b222fe-870f-4342-abee-xxxxxxxxxxxx
+
     rules.yaml:
       # AlertRule 프로비저닝 예시
       # 특정 Prometheus를 통해, 메모리 및 스토리지 점유율이 일정수치 이상인 노드를 검출
