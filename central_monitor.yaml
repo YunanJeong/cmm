@@ -285,7 +285,7 @@ grafana:
       basicAuth: false
       editable: false
       jsonData:
-          tlsSkipVerify: true
+        tlsSkipVerify: true
       orgId: 1
       type: prometheus
       url: http://${MY_EKS_DNS}:9090  # http/https 구분 기입 필요  # Public IP 노출주의
@@ -296,7 +296,8 @@ grafana:
       basicAuth: false
       editable: false
       jsonData:
-          tlsSkipVerify: true
+        tlsSkipVerify: true
+        maxLines: 5000  # grafana에서 제한하는 Loki 쿼리 라인 수. 5000 넘게 설정하려면 Loki 자체에서 쿼리제한도 풀어줘야 함
       orgId: 1
       type: loki
       url: http://${MY_EKS_LOKI}:3100  # http/https 구분 기입 필요  # Public IP 노출주의
