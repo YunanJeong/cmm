@@ -127,6 +127,8 @@ grafana:
           disableDeletion: true
           editable: false
           options:
+            # 이 경로에 대시보드 json이 저장되고, Grafana UI에서 Provisioned로 취급되어 변경&삭제 불가
+            # PVC 사용시, 매니페스트에서 대시보드를 제거해도 이전내역이 남아있는데, 이 경로의 json파일을 수동삭제하면 UI에서도 삭제가능해진다.
             path: /var/lib/grafana/dashboards/my-default
 
   #    - name: 'default'
