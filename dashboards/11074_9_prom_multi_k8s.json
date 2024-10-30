@@ -175,7 +175,7 @@
             "link": true,
             "linkTargetBlank": false,
             "linkTooltip": "Browse host details",
-            "linkUrl": "d/xfpJB9FGz/node-exporter?orgId=1&var-job=${job}&var-hostname=All&var-node=${__cell}&var-device=All&var-origin_prometheus=$origin_prometheus&var-DS__VICTORIAMETRICS=${DS__VICTORIAMETRICS}",
+            "linkUrl": "d/metricmonitoringuid/node-exporter?orgId=1&var-job=${job}&var-hostname=All&var-node=${__cell}&var-device=All&var-origin_prometheus=$origin_prometheus&var-DS__VICTORIAMETRICS=${DS__VICTORIAMETRICS}",
             "mappingType": 1,
             "pattern": "instance",
             "thresholds": [],
@@ -3960,7 +3960,7 @@
       ]
     },
     "timezone": "browser",
-    "title": "Node Exporter / All Cluster Monitoring",
-    "uid": "xfpJB9FGz",
+    "title": "K8s Metrics / Multi Clusters",
+    "uid": "metricmonitoringuid",
     "version": 2
   }
