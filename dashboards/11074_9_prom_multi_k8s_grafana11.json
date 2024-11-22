@@ -658,7 +658,8 @@
                   "Disk read",
                   "Disk write",
                   "Download",
-                  "Upload"
+                  "Upload",
+                  "Partition used"
                 ]
               }
             }
@@ -1546,6 +1547,52 @@
           }
         ],
         "title": "【$show_hostname】：Disk Space Used Basic(EXT?/XFS)",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {},
+              "includeByName": {},
+              "indexByName": {
+                "Time": 3,
+                "Value #A": 1,
+                "Value #B": 2,
+                "Value #C": 0,
+                "device": 5,
+                "fstype": 6,
+                "instance": 8,
+                "job": 7,
+                "mountpoint": 4
+              },
+              "renameByName": {
+                "Value #A": "Available",
+                "Value #B": "Used",
+                "Value #C": "Size"
+              }
+            }
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "include": {
+                "names": [
+                  "device",
+                  "fstype",
+                  "instance",
+                  "job",
+                  "mountpoint",
+                  "Size",
+                  "Available",
+                  "Used"
+                ]
+              }
+            }
+          }
+        ],
         "transform": "table",
         "type": "table-old"
       },
