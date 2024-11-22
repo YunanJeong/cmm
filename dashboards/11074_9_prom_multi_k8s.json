@@ -1,14 +1,4 @@
 {
-    "__inputs": [
-      {
-        "name": "DS__VICTORIAMETRICS",
-        "label": " VictoriaMetrics",
-        "description": "",
-        "type": "datasource",
-        "pluginId": "prometheus",
-        "pluginName": "Prometheus"
-      }
-    ],
     "__requires": [
       {
         "type": "panel",
