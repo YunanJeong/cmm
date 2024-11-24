@@ -630,7 +630,7 @@
             "renameByName": {
               "Value #B": "Memory",
               "Value #C": "CPU Cores",
-              "Value #D": "",
+              "Value #D": "Uptime",
               "Value #E": "Partition used",
               "Value #F": "CPU used",
               "Value #G": "Memory used",
@@ -640,7 +640,9 @@
               "Value #K": "Upload",
               "Value #L": "Interval Load",
               "Value #N": "TCP timewait",
-              "instance": ""
+              "instance": "IP (Link)",
+              "job": "",
+              "nodename": "Hostname"
             }
           }
         },
@@ -649,19 +651,17 @@
           "options": {
             "include": {
               "names": [
-                "instance",
                 "job",
-                "nodename",
-                "Value #D",
                 "CPU Cores",
                 "Memory",
                 "CPU used",
                 "Memory used",
+                "Partition used",
                 "Disk read",
                 "Disk write",
                 "Download",
                 "Upload",
-                "Partition used"
+                "IP (Link)"
               ]
             }
           }
