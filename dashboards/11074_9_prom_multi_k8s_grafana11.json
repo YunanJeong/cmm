@@ -60,7 +60,7 @@
         }
       ]
     },
-    "description": "Grafana 11, Centralized Multicluster Monitoring, Edited from 11074_rev9",
+    "description": "Grafana 11, Centralized Multicluster Monitoring, Edited from 11074",
     "editable": false,
     "gnetId": 11074,
     "graphTooltip": 0,
@@ -75,7 +75,7 @@
         "title": "Update",
         "tooltip": "Update dashboard",
         "type": "link",
-        "url": "https://grafana.com/grafana/dashboards/11074"
+        "url": "https://grafana.com/grafana/dashboards/22412"
       },
       {
         "$$hashKey": "object:2301",
@@ -2482,7 +2482,7 @@
         "dashLength": 10,
         "dashes": false,
         "datasource": "${DS__VICTORIAMETRICS}",
-        "editable": true,
+        "editable": false,
         "error": false,
         "fieldConfig": {
           "defaults": {
@@ -3426,7 +3426,7 @@
         "dashes": false,
         "datasource": "${DS__VICTORIAMETRICS}",
         "decimals": 2,
-        "editable": true,
+        "editable": false,
         "error": false,
         "fieldConfig": {
           "defaults": {
