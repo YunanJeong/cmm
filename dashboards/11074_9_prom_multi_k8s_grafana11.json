@@ -41,7 +41,7 @@
       },
       {
         "type": "panel",
-        "id": "table-old",
+        "id": "table",
         "name": "Table (old)",
         "version": ""
       }
@@ -119,9 +119,594 @@
         "description": "Partition utilization, disk read, disk write, download bandwidth, upload bandwidth, if there are multiple network cards or multiple partitions, it is the value of the network card or partition with the highest utilization rate collected.\n\nCurrEstab: The number of TCP connections whose current status is ESTABLISHED or CLOSE-WAIT.",
         "fieldConfig": {
           "defaults": {
-            "custom": {}
+            "custom": {
+              "minWidth": 97
+            }
           },
-          "overrides": []
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "nodename"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Hostname"
+                },
+                {
+                  "id": "unit",
+                  "value": "bytes"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                },
+                {
+                  "id": "custom.align"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "instance"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "IP（Link to details）"
+                },
+                {
+                  "id": "unit",
+                  "value": "short"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "links",
+                  "value": [
+                    {
+                      "targetBlank": false,
+                      "title": "Browse host details",
+                      "url": "d/newversionoldtable_minwidth/node-exporter?orgId=1&var-job=${job}&var-hostname=All&var-node=${__value.raw}&var-device=All&var-origin_prometheus=$origin_prometheus&var-DS__VICTORIAMETRICS=${DS__VICTORIAMETRICS}"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.align"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #B"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Memory"
+                },
+                {
+                  "id": "unit",
+                  "value": "bytes"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.align"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #C"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "CPU Cores"
+                },
+                {
+                  "id": "unit",
+                  "value": "short"
+                },
+                {
+                  "id": "custom.align"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #D"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": " Uptime"
+                },
+                {
+                  "id": "unit",
+                  "value": "s"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.align"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #E"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Partition used%*"
+                },
+                {
+                  "id": "unit",
+                  "value": "percent"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 70
+                      },
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 85
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #F"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "CPU used%"
+                },
+                {
+                  "id": "unit",
+                  "value": "percent"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 70
+                      },
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 85
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #G"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Memory used%"
+                },
+                {
+                  "id": "unit",
+                  "value": "percent"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 70
+                      },
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 85
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #H"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Disk read*"
+                },
+                {
+                  "id": "unit",
+                  "value": "Bps"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 10485760
+                      },
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 20485760
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #I"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Disk write*"
+                },
+                {
+                  "id": "unit",
+                  "value": "Bps"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 10485760
+                      },
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 20485760
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #J"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Download*"
+                },
+                {
+                  "id": "unit",
+                  "value": "bps"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 30485760
+                      },
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 104857600
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #K"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Upload*"
+                },
+                {
+                  "id": "unit",
+                  "value": "bps"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 30485760
+                      },
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 104857600
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #L"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "5m load"
+                },
+                {
+                  "id": "unit",
+                  "value": "short"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.align"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #M"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "CurrEstab"
+                },
+                {
+                  "id": "unit",
+                  "value": "short"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 1000
+                      },
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 1500
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #N"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "TCP_tw"
+                },
+                {
+                  "id": "unit",
+                  "value": "short"
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                },
+                {
+                  "id": "custom.align",
+                  "value": "center"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 5000
+                      },
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 20000
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
         },
         "fontSize": "80%",
         "gridPos": {
@@ -649,6 +1234,7 @@
             "options": {
               "include": {
                 "names": [
+                  "IP (Link)",
                   "job",
                   "CPU Cores",
                   "Memory",
@@ -659,14 +1245,14 @@
                   "Disk write",
                   "Download",
                   "Upload",
-                  "IP (Link)"
+                  "Hostname"
                 ]
               }
             }
           }
         ],
         "transform": "table",
-        "type": "table-old"
+        "type": "table"
       },
       {
         "aliasColors": {
@@ -732,7 +1318,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -888,7 +1474,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -1037,7 +1623,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -1211,7 +1797,7 @@
           },
           "textMode": "auto"
         },
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "targets": [
           {
             "expr": "avg(time() - node_boot_time_seconds{instance=~\"$node\"})",
@@ -1295,7 +1881,7 @@
           "minVizHeight": 1,
           "maxVizHeight": 300
         },
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "targets": [
           {
             "expr": "100 - (avg(rate(node_cpu_seconds_total{instance=~\"$node\",mode=\"idle\"}[$interval])) * 100)",
@@ -1347,9 +1933,214 @@
         "description": "In this kanban: the total disk, usage, available, and usage rate are consistent with the values of the Size, Used, Avail, and Use% columns of the df command, and the value of Use% will be rounded to one decimal place, which will be more accurate .\n\nNote: The Use% algorithm in df is: (size-free) * 100 / (avail + (size-free)), the result is divisible by this value, non-divisible by this value is +1, and the unit of the result is %.\nRefer to the df command source code:",
         "fieldConfig": {
           "defaults": {
-            "custom": {}
+            "custom": {
+              "minWidth": 97
+            }
           },
-          "overrides": []
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "mountpoint"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Mounted on"
+                },
+                {
+                  "id": "unit",
+                  "value": "bytes"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #A"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Avail"
+                },
+                {
+                  "id": "unit",
+                  "value": "bytes"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 10000000000
+                      },
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": 20000000000
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #B"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Used"
+                },
+                {
+                  "id": "unit",
+                  "value": "percent"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                },
+                {
+                  "id": "custom.align"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "rgba(50, 172, 45, 0.97)",
+                        "value": null
+                      },
+                      {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 70
+                      },
+                      {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 85
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #C"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Size"
+                },
+                {
+                  "id": "unit",
+                  "value": "bytes"
+                },
+                {
+                  "id": "custom.align"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "fstype"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Filesystem"
+                },
+                {
+                  "id": "unit",
+                  "value": "short"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.align"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "device"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Device"
+                },
+                {
+                  "id": "unit",
+                  "value": "short"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.align"
+                }
+              ]
+            }
+          ]
         },
         "fontSize": "80%",
         "gridPos": {
@@ -1362,8 +2153,8 @@
         "links": [
           {
             "targetBlank": true,
-            "title": "https://github.com/coreutils/coreutils/blob/master/src/df.c",
-            "url": "https://github.com/coreutils/coreutils/blob/master/src/df.c"
+            "title": "https://github.com/yunanjeong/cmm",
+            "url": "https://github.com/yunanjeong/cmm"
           }
         ],
         "pageSize": null,
@@ -1594,7 +2385,7 @@
           }
         ],
         "transform": "table",
-        "type": "table-old"
+        "type": "table"
       },
       {
         "cacheTimeout": null,
@@ -1659,7 +2450,7 @@
           },
           "textMode": "auto"
         },
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "targets": [
           {
             "expr": "avg(rate(node_cpu_seconds_total{instance=~\"$node\",mode=\"iowait\"}[$interval])) * 100",
@@ -1733,7 +2524,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 1,
         "points": false,
         "renderer": "flot",
@@ -1874,7 +2665,7 @@
           },
           "textMode": "value"
         },
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "targets": [
           {
             "expr": "count(node_cpu_seconds_total{instance=~\"$node\", mode='system'})",
@@ -1953,7 +2744,7 @@
           },
           "textMode": "auto"
         },
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "targets": [
           {
             "expr": "avg(node_filesystem_files_free{instance=~\"$node\",mountpoint=\"$maxmount\",fstype=~\"ext.?|xfs\"})",
@@ -2032,7 +2823,7 @@
           },
           "textMode": "auto"
         },
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "targets": [
           {
             "expr": "sum(node_memory_MemTotal_bytes{instance=~\"$node\"})",
@@ -2111,7 +2902,7 @@
           },
           "textMode": "auto"
         },
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "targets": [
           {
             "expr": "avg(node_filefd_maximum{instance=~\"$node\"})",
@@ -2190,7 +2981,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -2352,7 +3143,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -2547,7 +3338,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 2,
         "points": false,
         "renderer": "flot",
@@ -2680,7 +3471,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -2831,7 +3622,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -2959,7 +3750,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -3086,7 +3877,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -3238,7 +4029,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -3350,7 +4141,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -3503,7 +4294,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -3697,7 +4488,7 @@
           "alertThreshold": true
         },
         "percentage": false,
-        "pluginVersion": "7.2.0",
+        "pluginVersion": "11.3.0",
         "pointradius": 1,
         "points": false,
         "renderer": "flot",
