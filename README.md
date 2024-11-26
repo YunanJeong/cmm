@@ -30,17 +30,17 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm update
 
 # (오프라인 환경 등)아카이브 파일 필요시
-helm pull prometheus-community/kube-prometheus-stack --version 55.8.3
+helm pull prometheus-community/kube-prometheus-stack --version 66.1.0
 ```
 
 ## 중앙 모니터
 
 ```sh
 # grafana only
-helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f central_monitor.yaml
+helm install monitor prometheus-community/kube-prometheus-stack --version 66.1.0 -n monitor -f central_monitor.yaml
 
 # grafana only (환경변수 사용)
-envsubst < central_monitor.yaml | helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -n monitor -f -
+envsubst < central_monitor.yaml | helm install monitor prometheus-community/kube-prometheus-stack --version 66.1.0 -n monitor -f -
 ```
 
 ## 개별 클러스터 설정
@@ -51,20 +51,20 @@ envsubst < central_monitor.yaml | helm install monitor prometheus-community/kube
 
 ```sh
 # Install exporter and prometheus 
-helm install monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -f each_cluster.yaml -n monitor 
+helm install monitor prometheus-community/kube-prometheus-stack --version 66.1.0 -f each_cluster.yaml -n monitor 
 
 # prometheus nodeSelector 지정 예시
-helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -f each_cluster.yaml -n monitor \
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 66.1.0 -f each_cluster.yaml -n monitor \
 --set "prometheus.prometheusSpec.nodeSelector.kr-mum/noderole=kafka" \
 --set "prometheusOperator.nodeSelector.kr-mum/noderole=kafka"
 
 # kube metric 수집 활성화 예시
-helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -f each_cluster.yaml -n monitor \
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 66.1.0 -f each_cluster.yaml -n monitor \
 --set "kubernetesServiceMonitors.enabled=true" \
 --set "kubeStateMetrics.enabled=true"
 
 # WSL에서 실행 시 추가옵션 (WSL, 도커데탑 등 일부 환경에서 node exporter 실행 실패시에만 사용)
-helm upgrade monitor prometheus-community/kube-prometheus-stack --version 55.8.3 -f each_cluster.yaml -n monitor \
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 66.1.0 -f each_cluster.yaml -n monitor \
 --set "prometheus-node-exporter.hostRootFsMount.enabled=false"
 ```
 
