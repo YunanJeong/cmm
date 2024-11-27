@@ -1,13 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "dashboard_uid",
-      "label": "Enter SAME UID once again",
-      "type": "constant",
-      "description": "uid string for panel link",
-      "value": "PLEASE_use_your_custom_uid_X0dfg"
-    }
-  ],
   "__requires": [
     {
       "type": "panel",
@@ -164,16 +155,6 @@
               {
                 "id": "decimals",
                 "value": 2
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": false,
-                    "title": "Browse host details",
-                    "url": "d/${dashboard_uid}/node-exporter?orgId=1&var-job=${job}&var-hostname=All&var-node=${__value.raw}&var-device=All&var-origin_prometheus=$origin_prometheus&var-DS__VICTORIAMETRICS=${DS__VICTORIAMETRICS}"
-                  }
-                ]
               },
               {
                 "id": "custom.align"
@@ -743,28 +724,6 @@
           "thresholds": [],
           "type": "string",
           "unit": "bytes"
-        },
-        {
-          "$$hashKey": "object:1601",
-          "alias": "IP（Link to details）",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": true,
-          "linkTargetBlank": false,
-          "linkTooltip": "Browse host details",
-          "linkUrl": "d/${dashboard_uid}/node-exporter?orgId=1&var-job=${job}&var-hostname=All&var-node=${__value.raw}&var-device=All&var-origin_prometheus=$origin_prometheus&var-DS__VICTORIAMETRICS=${DS__VICTORIAMETRICS}",
-          "mappingType": 1,
-          "pattern": "instance",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
         },
         {
           "$$hashKey": "object:1602",
@@ -1346,7 +1305,7 @@
           "format": "time_series",
           "hide": false,
           "instant": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "CPU Cores",
           "refId": "B",
@@ -1356,7 +1315,7 @@
           "expr": "sum(node_load5{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"})",
           "format": "time_series",
           "hide": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Total 5m load",
           "refId": "A",
@@ -1366,7 +1325,7 @@
           "expr": "avg(1 - avg(rate(node_cpu_seconds_total{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",mode=\"idle\"}[$interval])) by (instance)) * 100",
           "format": "time_series",
           "hide": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Overall average used%",
           "refId": "F",
@@ -1501,7 +1460,7 @@
           "format": "time_series",
           "hide": false,
           "instant": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Total",
           "refId": "A",
@@ -1511,7 +1470,7 @@
           "expr": "sum(node_memory_MemTotal_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"} - node_memory_MemAvailable_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"})",
           "format": "time_series",
           "hide": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Total Used",
           "refId": "B",
@@ -1521,7 +1480,7 @@
           "expr": "(sum(node_memory_MemTotal_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"} - node_memory_MemAvailable_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"}) / sum(node_memory_MemTotal_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"}))*100",
           "format": "time_series",
           "hide": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Overall Average Used%",
           "refId": "H"
@@ -1648,7 +1607,7 @@
           "expr": "sum(avg(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))",
           "format": "time_series",
           "instant": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Total",
           "refId": "E"
@@ -1657,7 +1616,7 @@
           "expr": "sum(avg(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))",
           "format": "time_series",
           "instant": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Total Used",
           "refId": "C"
@@ -1666,7 +1625,7 @@
           "expr": "(sum(avg(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))) *100/(sum(avg(node_filesystem_avail_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))+(sum(avg(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))))",
           "format": "time_series",
           "instant": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Overall Average Used%",
           "refId": "A"
@@ -3234,7 +3193,7 @@
           "expr": "(1 - (node_memory_MemAvailable_bytes{instance=~\"$node\"} / (node_memory_MemTotal_bytes{instance=~\"$node\"})))* 100",
           "format": "time_series",
           "hide": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 10,
           "legendFormat": "Used%",
           "refId": "H"
@@ -4327,7 +4286,7 @@
         {
           "expr": "node_sockstat_sockets_used{instance=~'$node'}",
           "hide": false,
-          "interval": "30m",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Sockets_used",
           "refId": "B"
@@ -4858,6 +4817,6 @@
   },
   "timezone": "browser",
   "title": "K8s Node Metrics / Multi Clusters (Node Exporter, Prometheus, Grafana11, 2024, EN)",
-  "uid": "PLEASE_use_your_custom_uid_X0dfg",
+  "uid": "your_custom_uid_X0dfg",
   "version": 1
 }
