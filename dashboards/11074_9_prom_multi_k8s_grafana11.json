@@ -1286,7 +1286,8 @@
           "$$hashKey": "object:2312",
           "alias": "Overall average used%",
           "lines": false,
-          "pointradius": 1,
+          "linewidth": 0.5,
+          "pointradius": 0.5,
           "points": true,
           "yaxis": 2
         },
@@ -1446,7 +1447,8 @@
           "$$hashKey": "object:2495",
           "alias": "Overall Average Used%",
           "lines": false,
-          "pointradius": 1,
+          "linewidth": 0.5,
+          "pointradius": 0.5,
           "points": true,
           "yaxis": 2
         }
@@ -1589,7 +1591,8 @@
           "$$hashKey": "object:2617",
           "alias": "Overall Average Used%",
           "lines": false,
-          "pointradius": 1,
+          "linewidth": 0.5,
+          "pointradius": 0.5,
           "points": true,
           "yaxis": 2
         },
