@@ -1243,6 +1243,18 @@
           {
             "matcher": {
               "id": "byName",
+              "options": "CPU Cores"
+            },
+            "properties": [
+              {
+                "id": "custom.axisColorMode",
+                "value": "series"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
               "options": "Overall Average Used%"
             },
             "properties": [
@@ -1331,7 +1343,7 @@
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Total 5m load",
+          "legendFormat": "Total 5m Load",
           "refId": "A",
           "step": 240
         },
@@ -1350,7 +1362,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "$job：Overall total 5m load & average CPU used%",
+      "title": "$job：Overall Total 5m Load & average CPU used%",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -1369,7 +1381,7 @@
           "$$hashKey": "object:8791",
           "decimals": null,
           "format": "short",
-          "label": "Total 5m load",
+          "label": "Total 5m Load",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1412,6 +1424,18 @@
           "links": []
         },
         "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.axisColorMode",
+                "value": "series"
+              }
+            ]
+          },
           {
             "matcher": {
               "id": "byName",
@@ -1573,6 +1597,18 @@
           "links": []
         },
         "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.axisColorMode",
+                "value": "series"
+              }
+            ]
+          },
           {
             "matcher": {
               "id": "byName",
