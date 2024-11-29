@@ -1243,7 +1243,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "CPU Cores"
+              "options": "Total 5m Load"
             },
             "properties": [
               {
@@ -1327,6 +1327,16 @@
       "steppedLine": false,
       "targets": [
         {
+          "expr": "sum(node_load5{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Total 5m Load",
+          "refId": "A",
+          "step": 240
+        },
+        {
           "expr": "count(node_cpu_seconds_total{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\", mode='system'})",
           "format": "time_series",
           "hide": false,
@@ -1335,16 +1345,6 @@
           "intervalFactor": 1,
           "legendFormat": "CPU Cores",
           "refId": "B",
-          "step": 240
-        },
-        {
-          "expr": "sum(node_load5{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"})",
-          "format": "time_series",
-          "hide": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "Total 5m Load",
-          "refId": "A",
           "step": 240
         },
         {
@@ -1427,7 +1427,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Total"
+              "options": "Total Used"
             },
             "properties": [
               {
@@ -1508,6 +1508,16 @@
       "steppedLine": false,
       "targets": [
         {
+          "expr": "sum(node_memory_MemTotal_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"} - node_memory_MemAvailable_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Total Used",
+          "refId": "B",
+          "step": 4
+        },
+        {
           "expr": "sum(node_memory_MemTotal_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"})",
           "format": "time_series",
           "hide": false,
@@ -1516,16 +1526,6 @@
           "intervalFactor": 1,
           "legendFormat": "Total",
           "refId": "A",
-          "step": 4
-        },
-        {
-          "expr": "sum(node_memory_MemTotal_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"} - node_memory_MemAvailable_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"})",
-          "format": "time_series",
-          "hide": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "Total Used",
-          "refId": "B",
           "step": 4
         },
         {
@@ -1600,7 +1600,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Total"
+              "options": "Total Used"
             },
             "properties": [
               {
@@ -1682,15 +1682,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))",
-          "format": "time_series",
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "Total",
-          "refId": "E"
-        },
-        {
           "expr": "sum(avg(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))",
           "format": "time_series",
           "instant": false,
@@ -1698,6 +1689,15 @@
           "intervalFactor": 1,
           "legendFormat": "Total Used",
           "refId": "C"
+        },
+        {
+          "expr": "sum(avg(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Total",
+          "refId": "E"
         },
         {
           "expr": "(sum(avg(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))) *100/(sum(avg(node_filesystem_avail_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))+(sum(avg(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",fstype=~\"xfs|ext.*\"})by(device,instance))))",
