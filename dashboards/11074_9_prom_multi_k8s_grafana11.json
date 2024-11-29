@@ -1239,7 +1239,20 @@
           "custom": {},
           "links": []
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Overall Average Used%"
+            },
+            "properties": [
+              {
+                "id": "custom.axisColorMode",
+                "value": "series"
+              }
+            ]
+          }
+        ]
       },
       "fill": 0,
       "fillGradient": 0,
@@ -1284,7 +1297,7 @@
       "seriesOverrides": [
         {
           "$$hashKey": "object:2312",
-          "alias": "Overall average used%",
+          "alias": "Overall Average Used%",
           "lines": false,
           "linewidth": 0.5,
           "pointradius": 0.5,
@@ -1328,7 +1341,7 @@
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Overall average used%",
+          "legendFormat": "Overall Average Used%",
           "refId": "F",
           "step": 240
         }
@@ -1366,7 +1379,7 @@
           "$$hashKey": "object:8792",
           "decimals": 0,
           "format": "percent",
-          "label": "Overall average used%",
+          "label": "Overall Average Used%",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1398,7 +1411,20 @@
           "custom": {},
           "links": []
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Overall Average Used%"
+            },
+            "properties": [
+              {
+                "id": "custom.axisColorMode",
+                "value": "series"
+              }
+            ]
+          }
+        ]
       },
       "fill": 0,
       "fillGradient": 0,
@@ -1546,7 +1572,20 @@
           "custom": {},
           "links": []
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Overall Average Used%"
+            },
+            "properties": [
+              {
+                "id": "custom.axisColorMode",
+                "value": "series"
+              }
+            ]
+          }
+        ]
       },
       "fill": 0,
       "fillGradient": 0,
