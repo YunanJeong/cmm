@@ -1243,7 +1243,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Total 5m Load"
+              "options": "Total Used (5m-Avg.)"
             },
             "properties": [
               {
@@ -1348,7 +1348,7 @@
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Total 5m Load",
+          "legendFormat": "Total Used (5m-Avg.)",
           "refId": "A",
           "step": 240
         },
@@ -1397,7 +1397,7 @@
           "$$hashKey": "object:8791",
           "decimals": null,
           "format": "short",
-          "label": "Total 5m Load",
+          "label": "Total Used (5m-Avg.)",
           "logBase": 1,
           "max": null,
           "min": null,
