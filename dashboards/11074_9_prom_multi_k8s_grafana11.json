@@ -1262,12 +1262,21 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Overall Average Used%"
+              "options": "Utilization Rate%"
             },
             "properties": [
               {
                 "id": "custom.axisColorMode",
                 "value": "series"
+              },
+              {
+                "id": "min"
+              },
+              {
+                "id": "max"
+              },
+              {
+                "id": "decimals"
               }
             ]
           }
@@ -1316,7 +1325,7 @@
       "seriesOverrides": [
         {
           "$$hashKey": "object:2312",
-          "alias": "Overall Average Used%",
+          "alias": "Utilization Rate%",
           "lines": false,
           "linewidth": 0.5,
           "pointradius": 0.5,
@@ -1360,7 +1369,7 @@
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Overall Average Used%",
+          "legendFormat": "Utilization Rate%",
           "refId": "F",
           "step": 240
         }
@@ -1369,7 +1378,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "$job：Overall Total 5m Load & average CPU used%",
+      "title": "$job：Total Used CPU (5m-Average Load)",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -1398,7 +1407,7 @@
           "$$hashKey": "object:8792",
           "decimals": 0,
           "format": "percent",
-          "label": "Overall Average Used%",
+          "label": "Utilization Rate%",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1453,12 +1462,21 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Overall Average Used%"
+              "options": "Utilization Rate%"
             },
             "properties": [
               {
                 "id": "custom.axisColorMode",
                 "value": "series"
+              },
+              {
+                "id": "min"
+              },
+              {
+                "id": "max"
+              },
+              {
+                "id": "decimals"
               }
             ]
           }
@@ -1509,7 +1527,7 @@
         },
         {
           "$$hashKey": "object:2495",
-          "alias": "Overall Average Used%",
+          "alias": "Utilization Rate%",
           "lines": false,
           "linewidth": 0.5,
           "pointradius": 0.5,
@@ -1548,7 +1566,7 @@
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Overall Average Used%",
+          "legendFormat": "Utilization Rate%",
           "refId": "H"
         }
       ],
@@ -1556,7 +1574,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "$job：Overall total memory & average memory used%",
+      "title": "$job：Total Used Memory",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -1575,7 +1593,7 @@
           "$$hashKey": "object:8938",
           "decimals": null,
           "format": "bytes",
-          "label": "Total",
+          "label": "Total Used",
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -1585,7 +1603,7 @@
           "$$hashKey": "object:8939",
           "decimals": null,
           "format": "percent",
-          "label": "Overall Average Used%",
+          "label": "Utilization Rate%",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1633,12 +1651,21 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Overall Average Used%"
+              "options": "Utilization Rate%"
             },
             "properties": [
               {
                 "id": "custom.axisColorMode",
                 "value": "series"
+              },
+              {
+                "id": "min"
+              },
+              {
+                "id": "max"
+              },
+              {
+                "id": "decimals"
               }
             ]
           }
@@ -1685,7 +1712,7 @@
       "seriesOverrides": [
         {
           "$$hashKey": "object:2617",
-          "alias": "Overall Average Used%",
+          "alias": "Utilization Rate%",
           "lines": false,
           "linewidth": 0.5,
           "pointradius": 0.5,
@@ -1726,7 +1753,7 @@
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Overall Average Used%",
+          "legendFormat": "Utilization Rate%",
           "refId": "A"
         }
       ],
@@ -1734,7 +1761,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "$job：Overall total disk & average disk used%",
+      "title": "$job：Total Used Disk",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -1753,7 +1780,7 @@
           "$$hashKey": "object:8990",
           "decimals": 1,
           "format": "bytes",
-          "label": "Total",
+          "label": "Total Used",
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -1763,7 +1790,7 @@
           "$$hashKey": "object:8991",
           "decimals": null,
           "format": "percent",
-          "label": "Overall Average Used%",
+          "label": "Utilization Rate%",
           "logBase": 1,
           "max": null,
           "min": null,
