@@ -1249,6 +1249,13 @@
               {
                 "id": "custom.axisColorMode",
                 "value": "series"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
               }
             ]
           },
@@ -1433,6 +1440,13 @@
               {
                 "id": "custom.axisColorMode",
                 "value": "series"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
               }
             ]
           },
@@ -1606,6 +1620,13 @@
               {
                 "id": "custom.axisColorMode",
                 "value": "series"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
               }
             ]
           },
