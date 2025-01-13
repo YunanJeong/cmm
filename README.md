@@ -27,7 +27,7 @@
 ```sh
 # Add Repo
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm update
+helm repo update
 
 # (오프라인 환경 등)아카이브 파일 필요시
 helm pull prometheus-community/kube-prometheus-stack --version 66.1.0
