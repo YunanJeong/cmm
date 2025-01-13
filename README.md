@@ -64,8 +64,9 @@ helm upgrade monitor prometheus-community/kube-prometheus-stack --version 66.1.0
 --set "kubeStateMetrics.enabled=true"
 
 # WSL에서 실행 시 추가옵션 (WSL, 도커데탑 등 일부 환경에서 node exporter 실행 실패시에만 사용)
-helm upgrade monitor prometheus-community/kube-prometheus-stack --version 66.1.0 -f each_cluster.yaml -n monitor \
---set "prometheus-node-exporter.hostRootFsMount.enabled=false"
+helm install wsl-prom prometheus-community/kube-prometheus-stack --version 66.1.0 -f each_cluster.yaml \
+--set "prometheus-node-exporter.hostRootFsMount.enabled=false" \
+-n monitor
 ```
 
 ## 용어
