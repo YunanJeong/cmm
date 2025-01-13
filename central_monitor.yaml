@@ -149,12 +149,12 @@ grafana:
   dashboards: # {}
     my-default:
       11074_9_prom_multi_k8s_grafana11: # 22413 # 여러 Datasource 참조할 수 있도록 수정, 개별노드 페이지 쿼리 수정, 일부 패널 해상도 조정
-        url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/11074_9_prom_multi_k8s_grafana11.json
+        url: https://raw.githubusercontent.com/YunanJeong/cmm/refs/heads/main/dashboards/11074_9_prom_multi_k8s_grafana11.json
         # datasource: '$datasource'
       nodes:
-        url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/nodes.json
+        url: https://raw.githubusercontent.com/YunanJeong/cmm/refs/heads/main/dashboards/nodes.json
       node-cluster-rsrc-use:
-        url: https://raw.githubusercontent.com/YunanJeong/grafana-test/main/kube-prometheus-stack-test/dashboards/node-cluster-rsrc-use.json
+        url: https://raw.githubusercontent.com/YunanJeong/cmm/refs/heads/main/dashboards/node-cluster-rsrc-use.json
       node-exporter-full:
         gnetId: 1860
         revision: 32
