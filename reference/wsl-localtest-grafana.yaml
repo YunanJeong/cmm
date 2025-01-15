@@ -1,3 +1,8 @@
+#
+# envsubst < wsl-localtest-grafana.yaml | helm install wsl-gra prometheus-community/kube-prometheus-stack --version 66.1.0 -f -
+# envsubst < wsl-localtest-grafana.yaml | helm upgrade wsl-gra prometheus-community/kube-prometheus-stack --version 66.1.0 -f -
+#
+
 ## Deploy node exporter as a daemonset to all nodes
 ##
 nodeExporter:
@@ -197,6 +202,23 @@ grafana:
   ##
   dashboardsConfigMaps: {}
   #  default: ""
+
+  grafana.ini:
+    # smtp 설정: 알람용 메일 보낼시, 발신자 주소 및 SMTP 서버접속이 필요한데 UI에선 설정불가
+    smtp: 
+      enabled: true
+      host: ${MY_SMTP_SVR} # smtp.example.com:25
+      # user: ""
+      # password: ""
+      skip_verify: true
+      from_address: no-reply@example.com
+      from_name: my-sender-name
+      # ehlo_identity: 
+  # SMTP 서버에 인증할 정보를 Secret으로 관리할 경우
+  smtp: {}
+    # existingSecret: ""
+    # userKey: "user"
+    # passwordKey: "password"
 
   sidecar:
     dashboards:                 # 대시보드 사전 설정하기 (grafana-sc-dashboard)

@@ -198,6 +198,23 @@ grafana:
   dashboardsConfigMaps: {}
   #  default: ""
 
+  grafana.ini:
+    # smtp 설정: 알람용 메일 보낼시, 발신자 주소 및 SMTP 서버접속이 필요한데 UI에선 설정불가
+    smtp: 
+      enabled: true
+      host: ${MY_SMTP_SVR} # smtp.example.com:25
+      # user: ""
+      # password: ""
+      skip_verify: true
+      from_address: no-reply@example.com
+      from_name: my-sender-name
+      # ehlo_identity: 
+  # SMTP 서버에 인증할 정보를 Secret으로 관리할 경우
+  smtp: {}
+    # existingSecret: ""
+    # userKey: "user"
+    # passwordKey: "password"
+
   sidecar:
     dashboards:                 # 대시보드 사전 설정하기 (grafana-sc-dashboard)
       enabled: true               # true시, kube-prometheus-stack의 기본제공 대시보드 or 커스텀 대시보드를 활성화
