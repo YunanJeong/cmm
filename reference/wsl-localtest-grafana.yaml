@@ -204,7 +204,7 @@ grafana:
   #  default: ""
 
   grafana.ini:
-    # smtp 설정: 알람용 메일 보낼시, 발신자 주소 및 SMTP 서버접속이 필요한데 UI에선 설정불가
+    # smtp 설정: 알람용 메일 보낼시, 발신자 주소 및 SMTP 서버접속 설정이 필요한데 UI에선 설정불가
     smtp: 
       enabled: true
       host: ${MY_SMTP_SVR} # smtp.example.com:25
