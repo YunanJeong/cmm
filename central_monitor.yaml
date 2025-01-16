@@ -468,6 +468,12 @@ grafana:
     contactpoints.yaml:
       secret:
         apiVersion: 1
+        # Provisioned ContactPoints 삭제 예시 # Notification Policy에 의해 참조되고 있을시 삭제 실패
+        deleteContactPoints: []
+          # - orgId: 1
+          #   uid: email-xxx
+          # - orgId: 1
+          #   uid: awssns-mail-xxx
         contactPoints:
           - orgId: 1
             name: my-teams-channel
