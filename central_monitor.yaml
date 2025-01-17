@@ -476,22 +476,36 @@ grafana:
           #   uid: awssns-mail-xxx
         contactPoints:
           - orgId: 1
-            name: my-teams-channel
+            name: my-multi-cp
+            # 하나의 알람 트리거를 여러 플랫폼으로 받고 싶을 경우 receivers에 나열
             receivers:
-              - uid: teams-channel
+              - uid: email-xxx
+                type: email
+                settings:
+                  addresses: ${MY_MAIL}
+                  singleEmail: false
+                disableResolveMessage: true
+              - uid: teams-channel-xxx
                 type: teams
                 settings:
                   url: ${TEAMS_WEBHOOK}
                 disableResolveMessage: false
-          - orgId: 1
-            name: my-line-channel
-            receivers:
-              - uid: line-channel
+              - uid: line-notify-xxx
                 type: LINE
                 settings:
                   token: ${LINE_TOKEN}
                 disableResolveMessage: false
-
+          - orgId: 1
+            name: my-awssns-mail
+            receivers:
+              - uid: awssns-mail-xxx
+                type: sns
+                settings:
+                  # 액세스키 권한은 Role로 대체
+                  sigv4:
+                    region: ap-northeast-2
+                  topic_arn: arn:aws:sns:ap-northeast-2:000000000000:wai-monitor-alert
+                disableResolveMessage: false
   ## Configure notifiers
   ## ref: http://docs.grafana.org/administration/provisioning/#alert-notification-channels
   ##
