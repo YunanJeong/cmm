@@ -207,6 +207,7 @@ grafana:
       allow_editing: true
 
     # smtp 설정: 알람용 메일 보낼시, 발신자 주소 및 SMTP 서버접속 설정이 필요한데 UI에선 설정불가
+    # 허용설정이 필요한 SMTP 서버라면, 허용 받은 후 테스트하기 전에 잠시 대기할 것. 메일 서버 설정 반영이 느릴 수 있음
     smtp: 
       enabled: true
       host: ${MY_SMTP_SVR} # smtp.example.com:25
