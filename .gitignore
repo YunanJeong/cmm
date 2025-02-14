@@ -2,4 +2,5 @@
 *.tgz*
 !kube-prometheus-stack-55.8.3.tgz
 !kube-prometheus-stack-66.1.0.tgz
+!kube-prometheus-stack-69.2.4.tgz
 kube-prometheus-stack

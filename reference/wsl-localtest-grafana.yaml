@@ -1,6 +1,6 @@
 #
-# envsubst < wsl-localtest-grafana.yaml | helm install wsl-gra prometheus-community/kube-prometheus-stack --version 66.1.0 -f -
-# envsubst < wsl-localtest-grafana.yaml | helm upgrade wsl-gra prometheus-community/kube-prometheus-stack --version 66.1.0 -f -
+# envsubst < wsl-localtest-grafana.yaml | helm install wsl-gra prometheus-community/kube-prometheus-stack --version 69.2.4 -f -
+# envsubst < wsl-localtest-grafana.yaml | helm upgrade wsl-gra prometheus-community/kube-prometheus-stack --version 69.2.4 -f -
 #
 
 ## Deploy node exporter as a daemonset to all nodes
