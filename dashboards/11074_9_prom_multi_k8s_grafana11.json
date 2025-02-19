@@ -51,7 +51,7 @@
       }
     ]
   },
-  "description": "Edited from 11074, Grafana 11, Vertical Mode (MinWidth), Centralized Multicluster Monitoring",
+  "description": "Centralized Multicluster Monitoring / Node Metrics / Vertical Mode Optimization / Grafana 11 / Edited from 11074",
   "editable": false,
   "gnetId": 22413,
   "graphTooltip": 0,
@@ -4655,7 +4655,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 26,
+  "schemaVersion": 1,
   "style": "dark",
   "tags": [
     "Prometheus",
