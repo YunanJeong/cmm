@@ -79,15 +79,25 @@ helm install wsl-prom prometheus-community/kube-prometheus-stack --version 69.2.
 - 이러한 차트 대부분은 단일 클러스터 내 사용을 가정하여 만들어짐
 - 기존 차트로 멀티클러스터에 대해 Centralized 모니터링을 하려면 수정 필요
 
-### Service Monitor
+### ServiceMonitor
 
-- prometheus-opreator에서 제공하는 CRD
-- Service Monitor는 Prometheus가 Kubernetes 서비스를 자동으로 발견하고, 이 서비스들이 노출하는 메트릭을 수집할 수 있게 해준다.
-- 원래 Prometheus에서 읽을 exporter정보를 `prometheus.yaml`(`prometheusSpec`)에 수동설정해야 하는데 Service Monitor를 통해 이를 자동화해준다.
-- Service Monitor는 모니터링 대상 서비스에서 on-off하는 옵션이다.
-  - 단, Service Monitor는 단일 K8s 클러스터 내에서 동작하는 것을 목적으로 만들어졌기 때문에, 원격 환경에선 적합하지 않다.
-- 이 헬름 차트 외에도 prometheus 관련 기능을 제공하는 차트에서 Service Monitor 옵션이 종종 등장한다.
+- prometheus-operator에서 제공하는 CRD
+- ServiceMonitor는 Prometheus가 exporter의 Service를 자동으로 발견하고, 이 Service로 노출되는 메트릭을 수집할 수 있게 해준다.
+- 기존에는 Prometheus 설정파일(`prometheus.yaml(prometheusSpec)`)에 exporter 정보를 매번 수동 반영해야 하는데, ServiceMonitor를 통해 이 과정을 자동화하고 동적으로 관리할 수 있다.
+  - e.g. 스케일링이 잦은 클러스터에서 daemonset으로 배포된 exporter => 매번 변경되는 exporter 정보를 Prometheus에 반영하려는 경우
+  - e.g. 아주 많은 수의 exporter를 Promethues에 반영하려는 경우
+- prometheus-operator가 사실상 업계표준이므로, 모니터링 대상이 될만한 여러 서비스의 헬름차트에서 Prometheus연동을 위한 ServiceMonitor 관련 옵션을 제공한다.
+  - 단, ServiceMonitor는 동일 클러스터 내에서 동작하는 것을 목적으로 만들어졌기 때문에, 원격 환경에선 적합하지 않다.
 - 다시 읽어보기: [Service Monitor 컨셉, 쓰는 이유, 장점](https://jerryljh.medium.com/prometheus-servicemonitor-98ccca35a13e)
+
+#### ServiceMonitor 동작 방식
+
+- Prometheus, ServiceMonitor 모두 CRD임
+- 각 리소스에 설정된 `전용 selector를 통해서 prometheus=>servicemonitor=>service=>exporter(Pod) 순으로 label match`하는 방식임
+  - Promtheus CRD의 `serviceMonitorSelector`
+  - ServiceMonitor CRD의 `spec.selector.matchLabels`
+- exporter는 반드시 Service(ClusterIP)로 배포되어 있어야 함
+- kube-prometheus-stack에서 배포하는 node-exporter,ServiceMonitor는 자동매칭되도록 기본값이 설정되어있지만, `다른 헬름차트의 ServiceMonitor를 연동하려면 Prometheus의 serviceMonitorSelector에 추가등록이 필요`하다.
 
 ### Sidecar
 
