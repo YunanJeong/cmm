@@ -52,7 +52,15 @@ prometheus:
       #   static_configs:
       #     - targets:
       #       - test-kafka-jmx-metrics.default.svc.cluster.local:5556
-  
+    
+    ## If true, a nil or {} value for prometheus.prometheusSpec.serviceMonitorSelector will cause the
+    ## prometheus resource to be created with selectors based on values in the helm deployment,
+    ## which will also match the servicemonitors created
+    ##
+    # false시 클러스터 내 모든 ServiceMonitor를 수집대상으로 함
+    # true(default)시, kube-prometheus-stack에 의해 배포된 ServiceMonitor만 수집대상으로 함
+    serviceMonitorSelectorNilUsesHelmValues: false  # default: true
+
   # ingress 대신 그냥 ExternalIP:Port로 접속권장. 개별 클러스터마다 URL과 ingress controller 관리하기 번거로움
   ingress:
     enabled: false
@@ -66,6 +74,8 @@ prometheus:
     # - /
     # pathType: ImplementationSpecific
     tls: []
+
+
 
 
 ## Configuration for prometheus-node-exporter subchart
