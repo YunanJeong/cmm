@@ -94,10 +94,19 @@ helm install wsl-prom prometheus-community/kube-prometheus-stack --version 69.2.
 
 - Prometheus, ServiceMonitor 모두 CRD임
 - 각 리소스에 설정된 `전용 selector를 통해서 prometheus=>servicemonitor=>service=>exporter(Pod) 순으로 label match`하는 방식임
-  - Promtheus CRD의 `serviceMonitorSelector`
+  - Promtheus CRD의 `serviceMonitorSelector` 
   - ServiceMonitor CRD의 `spec.selector.matchLabels`
-- exporter는 반드시 Service(ClusterIP)로 배포되어 있어야 함
+  - exporter는 반드시 Service(ClusterIP)로 배포되어 있어야 함
 - kube-prometheus-stack에서 배포하는 node-exporter,ServiceMonitor는 자동매칭되도록 기본값이 설정되어있지만, `다른 헬름차트의 ServiceMonitor를 연동하려면 Prometheus의 serviceMonitorSelector에 추가등록이 필요`하다.
+- `serviceMonitorSelector={}`이면 클러스터 내 모든 ServiceMonitor를 수집대상으로 하는데, kube-prometheus-stack 헬름차트에선 다음 값을 false로 설정하면 된다.
+
+```yaml
+prometheus:
+  prometheusSpec:
+    # false시 클러스터 내 모든 ServiceMonitor를 수집대상으로 함
+    # true(default)시, kube-prometheus-stack에 의해 배포된 ServiceMonitor만 수집대상으로 함
+    serviceMonitorSelectorNilUsesHelmValues: false  
+```
 
 ### Sidecar
 
