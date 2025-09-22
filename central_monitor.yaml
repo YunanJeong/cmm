@@ -148,8 +148,8 @@ grafana:
   ##
   dashboards: # {}
     my-default:
-      11074_9_prom_multi_k8s_grafana11: # 22413 # 여러 Datasource 참조할 수 있도록 수정, 개별노드 페이지 쿼리 수정, 일부 패널 해상도 조정
-        url: https://raw.githubusercontent.com/YunanJeong/cmm/refs/heads/main/dashboards/11074_9_prom_multi_k8s_grafana11.json
+      22413_prom_multi_k8s_grafana11: # 22413 # 여러 Datasource 참조할 수 있도록 수정, 개별노드 페이지 쿼리 수정, 일부 패널 해상도 조정
+        url: https://raw.githubusercontent.com/YunanJeong/cmm/refs/heads/main/dashboards/22413_prom_multi_k8s_grafana11.json
         # datasource: '$datasource'
       nodes:
         url: https://raw.githubusercontent.com/YunanJeong/cmm/refs/heads/main/dashboards/nodes.json
