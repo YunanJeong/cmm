@@ -51,7 +51,7 @@
       }
     ]
   },
-  "description": "Centralized Multicluster Monitoring / Node Metrics / Vertical Mode Optimization / Grafana 11 / Edited from 11074",
+  "description": "Centralized Multicluster Monitoring / Node Metrics / Multi-Job Selection / Grafana 11 / Reference 11074",
   "editable": false,
   "gnetId": 22413,
   "graphTooltip": 0,
@@ -4705,9 +4705,9 @@
         "datasource": "${DS__VICTORIAMETRICS}",
         "definition": "label_values(node_uname_info{origin_prometheus=~\"$origin_prometheus\"}, job)",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "JOB",
-        "multi": false,
+        "multi": true,
         "name": "job",
         "options": [],
         "query": "label_values(node_uname_info{origin_prometheus=~\"$origin_prometheus\"}, job)",
