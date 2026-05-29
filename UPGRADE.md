@@ -68,6 +68,7 @@ sudo chown -R 472:472 <pv 경로>
 
 #### 구버전 grafana.db를 신버전 PV에 심어 이식 시 init container 실패
 
+(docker 기반 쿠버네티스에서 발생, initChownData는 처음에만 쓰고 꺼두는게 나을듯)
 신버전 첫 install 때 PV에 만들어진 `png`/`pdf`/`csv` 디렉토리가 남아있는 상태에서 db를 구버전으로 교체하고 재install하면, init container가 해당 디렉토리 chown에서 Permission denied로 막힘.
 이 세 디렉토리는 grafana가 PNG 렌더/PDF·CSV export 결과를 쌓는 임시 출력 캐시 → 자동 재생성, UI 자산 무관, 삭제해도 안전.
 
