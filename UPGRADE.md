@@ -76,3 +76,18 @@ sudo chown -R 472:472 <pv 경로>
 sudo rm -rf <pv 경로>/{png,pdf,csv}
 ```
 
+#### grafana 13에서 dashboard provisioner가 `too many open files`
+
+grafana 13이 11보다 inotify watcher를 많이 사용. 호스트 default 한계(`max_user_instances=128`)가 부족해 dashboard provisioner가 폴더 watch 실패.
+호스트에서 sysctl 값 상향:
+
+```sh
+sudo sysctl -w fs.inotify.max_user_instances=512
+sudo sysctl -w fs.inotify.max_user_watches=524288
+
+# 영구 적용
+echo 'fs.inotify.max_user_instances=512' | sudo tee -a /etc/sysctl.conf
+echo 'fs.inotify.max_user_watches=524288' | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+```
+

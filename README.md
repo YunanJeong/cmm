@@ -197,6 +197,24 @@ kubectl create clusterrolebinding yunan-cluster-admin-binding --clusterrole=clus
 - **호스트에서 PV로 db 직접 넣을 때**: grafana 서브차트 securityContext(default UID/GID 472)와 동일한 소유권으로 맞추기. `sudo chown -R 472:472 <pv 경로>`
 - **구버전 grafana.db를 신버전 PV에 심어 이식할 때**: init container가 `png`/`pdf`/`csv` 디렉토리 chown에서 Permission denied로 막힘. 이 세 디렉토리는 신버전 첫 install 때 만들어진 PNG 렌더/PDF·CSV export 임시 캐시라 자동 재생성됨. 삭제해도 안전. `sudo rm -rf <pv 경로>/{png,pdf,csv}`
 
+### grafana 13에서 dashboard provisioner inotify 부족
+
+- 로그: `error watching folder ... too many open files`
+- 원인: grafana 13이 11보다 inotify watcher를 훨씬 많이 사용. 같은 호스트에 grafana 11/13 둘 다 떠있거나 sidecar까지 같이 돌면 호스트 default(`max_user_instances=128`, `max_user_watches=29638`)가 부족해짐
+- 해결: 호스트에서 inotify 한계 상향
+
+```sh
+sudo sysctl -w fs.inotify.max_user_instances=512
+sudo sysctl -w fs.inotify.max_user_watches=524288
+
+# 영구 적용
+echo 'fs.inotify.max_user_instances=512' | sudo tee -a /etc/sysctl.conf
+echo 'fs.inotify.max_user_watches=524288' | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+```
+
+이후 grafana pod 재시작.
+
 ### docker 런타임에서 grafana init container chown 매번 실패
 
 - k3s가 docker로 동작하는 환경 등에서 docker default seccomp/apparmor가 chown syscall을 제한
