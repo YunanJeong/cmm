@@ -91,6 +91,11 @@ grafana:
       ##
       # sizeLimit: 300Mi
 
+  # docker 런타임 환경(k3s가 docker로 동작 등)에서 default seccomp/apparmor가 chown syscall 제한 → init container가 매 부팅마다 막힘
+  # PV가 이미 472:472라 init chown 자체가 불필요하므로 끔
+  initChownData:
+    enabled: false
+
   ## Additional grafana server volume mounts
   # Defines additional volume mounts.
   # extraVolumeMounts: []
@@ -117,7 +122,6 @@ grafana:
     #     readOnly: true
     #     volumeAttributes:
     #       secretProviderClass: "grafana-env-spc"
-
 
   ## Configure grafana dashboard providers
   ## ref: http://docs.grafana.org/administration/provisioning/#dashboards

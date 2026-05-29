@@ -14,6 +14,12 @@ crds:
 # default true. CRD 없는 환경에서는 PrometheusRule 매니페스트 생성 시도 → install 실패. operator 미사용이라 룰셋 무용
 defaultRules:
   create: false
+
+grafana:
+  # docker 런타임 환경(k3s가 docker로 동작 등)에서 default seccomp/apparmor가 chown syscall 제한 → init container가 매 부팅마다 막힘
+  # PV가 이미 472:472라 init chown 자체가 불필요하므로 끔
+  initChownData:
+    enabled: false
 ```
 
 ### 로컬 테스트시
@@ -68,3 +74,4 @@ sudo chown -R 472:472 <pv 경로>
 ```sh
 sudo rm -rf <pv 경로>/{png,pdf,csv}
 ```
+
