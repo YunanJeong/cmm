@@ -181,13 +181,21 @@ kubectl create clusterrolebinding yunan-cluster-admin-binding --clusterrole=clus
 
 ### grafana.db (UI 자산 저장소)
 
-- UI에서 만든 대시보드/알람룰/유저/datasource 등 모든 커스텀 정보는 PV 내 `/var/lib/grafana/grafana.db` (SQLite) 한 파일에 저장
-- 백업/복구/마이그레이션은 이 파일만 옮기면 됨
-  - 단, datasource 비번은 `grafana.ini`의 `[security] secret_key`로 암호화돼있음 → 새 환경에서 복호화하려면 secret_key 동일해야 함
-  - secret_key를 helm values에 명시해두면 마이그레이션시 db만 옮겨도 비번 안 깨짐
-- 프로비저닝된 자산(values/configmap 기반 dashboard·datasource·alerting)은 db에 사본이 있어도 pod 재시작시 차트가 덮어쓰므로, db 백업과 무관
-- 보안: grafana.db에는 API 키/datasource 비번/유저 해시 등이 들어있어 git에 올리면 안 됨
-- 파일을 호스트에서 PV에 직접 넣을 경우 grafana 서브차트의 securityContext(runAsUser/fsGroup, default 472)와 동일한 UID:GID로 소유권을 맞춰야 함. `sudo chown -R 472:472 <pv 경로>`
+- UI에서 만든 모든 커스텀 정보(대시보드/알람룰/유저/UI 추가 datasource 등)는 PV 내 단일 SQLite 파일 `/var/lib/grafana/grafana.db`에 저장.
+- 일반적인 마이그레이션 대상은 `grafana.db` + `grafana.ini`. 본 프로젝트는 ini를 helm value로 관리하므로 db만 옮기면 됨.
+- 버전이 다른 db라도 신버전 grafana가 알아서 신스키마로 변환해 사용한다(자동 마이그레이션). 단 변환은 구→신 한 방향만 가능 — 한번 변환된 db는 다시 구버전에서 못 읽는다.
+
+#### 같이 옮길 필요 없는 것
+
+- 프로비저닝된 자산(차트 values/configmap으로 깐 dashboard·datasource·alerting)
+  - db에 사본이 있어도 pod 뜰 때 차트가 매번 덮어쓰므로 db 백업과 무관
+  - 진본은 values 파일
+
+#### 주의사항
+
+- **git에 올리지 말 것**: API 키/datasource 비번/유저 해시 등 민감정보 포함
+- **호스트에서 PV로 db 직접 넣을 때**: grafana 서브차트 securityContext(default UID/GID 472)와 동일한 소유권으로 맞추기. `sudo chown -R 472:472 <pv 경로>`
+- **구버전 grafana.db를 신버전 PV에 심어 이식할 때**: init container가 `png`/`pdf`/`csv` 디렉토리 chown에서 Permission denied로 막힘. 이 세 디렉토리는 신버전 첫 install 때 만들어진 PNG 렌더/PDF·CSV export 임시 캐시라 자동 재생성됨. 삭제해도 안전. `sudo rm -rf <pv 경로>/{png,pdf,csv}`
 
 ### PV 삭제 안됨(STATUS=TERMINATING에서 멈춤 현상)
 

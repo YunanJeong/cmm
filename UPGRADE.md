@@ -16,22 +16,26 @@ defaultRules:
   create: false
 ```
 
-## 로컬 테스트시
+### 로컬 테스트시
 
 - 알람관련 설정에서 빈값이 들어갈 경우 배포 실패하도록 변경됨
 - `source dummy.env.test` 후 배포할 것
 
-
 ### 실제 업그레이드
 
-PV 안 쓰면 그냥 조지면 된다.
+#### PV 안 쓰는 경우
+
+그냥 조지면 된다.
 
 ```sh
 envsubst < central_monitor.yaml | helm upgrade monitor prometheus-community/kube-prometheus-stack --version 86.0.0 -n monitor -f -
 ```
 
-PV 쓰면 grafana 13이 SQLite DB를 신스키마로 자동 마이그레이션(단방향)하므로, DB 백업만 떠두고 조진다.
+#### PV 쓰는 경우
+
+grafana 13이 구버전 db를 신스키마로 자동 변환해 사용하는데, 한번 변환된 db는 다시 구버전에서 못 읽으므로 백업만 떠두고 조진다.
 (grafana.db = UI에서 만든 대시보드/알람룰/유저/datasource 등 모든 커스텀 자산. README의 "grafana.db" 참고)
+일반적인 마이그레이션 대상은 grafana.db + grafana.ini. 본 프로젝트는 ini를 helm value로 관리하므로 db만 옮기면 됨.
 
 ```sh
 # "컨테이너 내 PV경로"의 grafana.db를 "컨테이너 내 /tmp"로 복사(운영중 안정적인 스냅샷을 위해 컨테이너 내부에서 복제)
@@ -42,4 +46,25 @@ kubectl cp monitor/<grafana-pod>:/tmp/grafana.db ./grafana-$(date +%F).db
 ```
 
 망하면 복사해둔 파일로 DB 갈아끼우고 `helm rollback monitor -n monitor`.
-호스트에서 PV에 직접 넣을 때는 grafana 서브차트 securityContext와 동일 UID:GID로 소유권 맞추기. `sudo chown -R 472:472 <pv 경로>`
+
+> 구버전 grafana.db를 신버전 PV에 심어 이식하는 동작 확인됨 (UI 자산 정상 복구).
+> 단 아래 "이슈 대응"의 권한/png·pdf·csv 디렉토리 처리 필요.
+
+### 이슈 대응
+
+#### 호스트에서 PV로 db 직접 주입시 권한 문제
+
+grafana 서브차트 securityContext와 동일 UID:GID로 소유권 맞추기.
+
+```sh
+sudo chown -R 472:472 <pv 경로>
+```
+
+#### 구버전 grafana.db를 신버전 PV에 심어 이식 시 init container 실패
+
+신버전 첫 install 때 PV에 만들어진 `png`/`pdf`/`csv` 디렉토리가 남아있는 상태에서 db를 구버전으로 교체하고 재install하면, init container가 해당 디렉토리 chown에서 Permission denied로 막힘.
+이 세 디렉토리는 grafana가 PNG 렌더/PDF·CSV export 결과를 쌓는 임시 출력 캐시 → 자동 재생성, UI 자산 무관, 삭제해도 안전.
+
+```sh
+sudo rm -rf <pv 경로>/{png,pdf,csv}
+```
