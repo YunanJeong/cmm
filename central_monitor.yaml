@@ -1,5 +1,12 @@
+## 86.0.0부터 차트가 prometheus-operator CRD를 기본 ON으로 깔지만, 중앙은 operator 미사용이라 불필요
+crds:
+  enabled: false
+
+## default true. CRD 없는 환경에서는 PrometheusRule 매니페스트 생성 시도 → install 실패. operator 미사용이라 룰셋 무용
+defaultRules:
+  create: false
+
 ## Deploy node exporter as a daemonset to all nodes
-##
 nodeExporter:
   enabled: false
 
@@ -16,7 +23,8 @@ alertmanager:
 kubernetesServiceMonitors:
   enabled: false
 
-kubeStateMetrics:       ## Component scraping kube state metrics
+## Component scraping kube state metrics
+kubeStateMetrics: 
   enabled: false
 
 
@@ -43,7 +51,7 @@ grafana:
       spec.ingressClassName: traefik  # k3s default ingress controller
     labels: {}
     hosts:
-      - monitor.wai
+      - '{{ .Release.Name }}.wai'
     path: /
     tls: []
 
@@ -54,7 +62,7 @@ grafana:
   persistence:
     # Type of persistence (pvc or statefulset)
     type: statefulset
-    enabled: false
+    enabled: true # false
     # storageClassName: default
     accessModes:
       - ReadWriteOnce

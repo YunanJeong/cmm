@@ -179,6 +179,15 @@ kubectl create clusterrolebinding yunan-cluster-admin-binding --clusterrole=clus
 # --set "prometheus.prometheusSpec.nodeSelector.wai-eks/noderole=home" \
 ```
 
+### grafana.db (UI 자산 저장소)
+
+- UI에서 만든 대시보드/알람룰/유저/datasource 등 모든 커스텀 정보는 PV 내 `/var/lib/grafana/grafana.db` (SQLite) 한 파일에 저장
+- 백업/복구/마이그레이션은 이 파일만 옮기면 됨
+  - 단, datasource 비번은 `grafana.ini`의 `[security] secret_key`로 암호화돼있음 → 새 환경에서 복호화하려면 secret_key 동일해야 함
+  - secret_key를 helm values에 명시해두면 마이그레이션시 db만 옮겨도 비번 안 깨짐
+- 프로비저닝된 자산(values/configmap 기반 dashboard·datasource·alerting)은 db에 사본이 있어도 pod 재시작시 차트가 덮어쓰므로, db 백업과 무관
+- 보안: grafana.db에는 API 키/datasource 비번/유저 해시 등이 들어있어 git에 올리면 안 됨
+
 ### PV 삭제 안됨(STATUS=TERMINATING에서 멈춤 현상)
 
 - pv는 namespace가 상관없지만, pvc는 헬름 설치시 선택한 namespace에 있다.
