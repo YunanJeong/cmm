@@ -42,3 +42,4 @@ kubectl cp monitor/<grafana-pod>:/tmp/grafana.db ./grafana-$(date +%F).db
 ```
 
 망하면 복사해둔 파일로 DB 갈아끼우고 `helm rollback monitor -n monitor`.
+호스트에서 PV에 직접 넣을 때는 grafana 서브차트 securityContext와 동일 UID:GID로 소유권 맞추기. `sudo chown -R 472:472 <pv 경로>`

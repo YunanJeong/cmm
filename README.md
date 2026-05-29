@@ -187,6 +187,7 @@ kubectl create clusterrolebinding yunan-cluster-admin-binding --clusterrole=clus
   - secret_key를 helm values에 명시해두면 마이그레이션시 db만 옮겨도 비번 안 깨짐
 - 프로비저닝된 자산(values/configmap 기반 dashboard·datasource·alerting)은 db에 사본이 있어도 pod 재시작시 차트가 덮어쓰므로, db 백업과 무관
 - 보안: grafana.db에는 API 키/datasource 비번/유저 해시 등이 들어있어 git에 올리면 안 됨
+- 파일을 호스트에서 PV에 직접 넣을 경우 grafana 서브차트의 securityContext(runAsUser/fsGroup, default 472)와 동일한 UID:GID로 소유권을 맞춰야 함. `sudo chown -R 472:472 <pv 경로>`
 
 ### PV 삭제 안됨(STATUS=TERMINATING에서 멈춤 현상)
 
