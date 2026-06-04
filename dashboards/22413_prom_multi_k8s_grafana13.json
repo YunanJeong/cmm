@@ -32,7 +32,7 @@
     ],
     "cursorSync": "Off",
     "description": "Centralized Multicluster Monitoring / Node Metrics / Multi-Job Selection / Grafana 13 / Reference 11074",
-    "editable": true,
+    "editable": false,
     "elements": {
       "panel-13": {
         "kind": "Panel",
