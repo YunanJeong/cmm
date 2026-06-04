@@ -31,7 +31,7 @@
       }
     ],
     "cursorSync": "Off",
-    "description": "Centralized Multicluster Monitoring / Node Metrics / Multi-Job Selection / Grafana 13 / Reference 11074",
+    "description": "Centralized Multicluster Monitoring / Node Metrics / Multi-[Datasource,Cluster,Job] Query / Column Filter / Grafana 13 / Reference 11074",
     "editable": false,
     "elements": {
       "panel-13": {
@@ -7427,8 +7427,8 @@
           "sort": "disabled",
           "definition": "label_values(cluster)",
           "options": [],
-          "multi": false,
-          "includeAll": false,
+          "multi": true,
+          "includeAll": true,
           "allowCustomValue": true
         }
       },
