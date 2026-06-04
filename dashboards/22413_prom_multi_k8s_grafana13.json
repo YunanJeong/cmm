@@ -31,7 +31,7 @@
       }
     ],
     "cursorSync": "Off",
-    "description": "Centralized Multicluster Monitoring / Node Metrics / Multi-[Datasource,Cluster,Job] Query / Column Filter / Grafana 13 / Reference 11074",
+    "description": "Centralized Multicluster Monitoring / Node Metrics / Dynamic-[Datasource,Cluster,Job] Query / Add Column Filter / Minor UI fixes / Grafana 13.0.1",
     "editable": false,
     "elements": {
       "panel-13": {
