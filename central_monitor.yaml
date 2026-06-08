@@ -496,7 +496,7 @@ grafana:
                 type: email
                 settings:
                   addresses: ${MY_MAIL}
-                  singleEmail: false
+                  singleEmail: true # true면 하나의 메일로 모든 주소에 발송됨, false면 주소마다 메일이 따로 발송됨
                 disableResolveMessage: true
               - uid: teams-channel-xxx
                 type: teams
