@@ -30,17 +30,17 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo update
 
 # (오프라인 환경 등)아카이브 파일 필요시
-helm pull prometheus-community/kube-prometheus-stack --version 69.2.4
+helm pull prometheus-community/kube-prometheus-stack --version 86.2.2
 ```
 
 ## 중앙 모니터
 
 ```sh
 # grafana only
-helm install monitor prometheus-community/kube-prometheus-stack --version 69.2.4 -n monitor -f central_monitor.yaml
+helm install monitor prometheus-community/kube-prometheus-stack --version 86.2.2 -n monitor -f central_monitor.yaml
 
 # grafana only (환경변수 사용)
-envsubst < central_monitor.yaml | helm install monitor prometheus-community/kube-prometheus-stack --version 69.2.4 -n monitor -f -
+envsubst < central_monitor.yaml | helm install monitor prometheus-community/kube-prometheus-stack --version 86.2.2 -n monitor -f -
 ```
 
 ## 개별 클러스터 설정
