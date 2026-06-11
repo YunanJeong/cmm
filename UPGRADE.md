@@ -34,7 +34,7 @@ grafana:
 그냥 조지면 된다.
 
 ```sh
-envsubst < central_monitor.yaml | helm upgrade monitor prometheus-community/kube-prometheus-stack --version 86.0.0 -n monitor -f -
+envsubst < central_monitor.yaml | helm upgrade monitor prometheus-community/kube-prometheus-stack --version 86.2.2 -n monitor -f -
 ```
 
 #### PV 쓰는 경우
@@ -90,4 +90,92 @@ echo 'fs.inotify.max_user_instances=512' | sudo tee -a /etc/sysctl.conf
 echo 'fs.inotify.max_user_watches=524288' | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 ```
+
+## each_monitor (node-exporter, prometheus)
+
+각 클러스터 value(`each_cluster.yaml` 및 타 저장소의 동등 파일)를 69.2.4 → 86.2.2로 올릴 때 손봐야 할 항목.
+grafana는 each cluster에서 꺼두므로(`grafana.enabled: false`) grafana 서브차트 변화(8.9→12.4)는 무관.
+아래 외의 사용 중인 key(alertmanager, nodeExporter, prometheus.prometheusSpec.\*, serviceMonitorSelectorNilUsesHelmValues, kube\*ServiceMonitors, kubeStateMetrics, prometheusOperator, crds.enabled 등)는 key·default 변동 없이 호환 유지되므로 그대로 두면 됨.
+
+### 변경 항목 요약
+
+- `prometheus-node-exporter.rbac.pspEnabled` 제거 (필수 권장)
+  - 86의 node-exporter 서브차트(4.55)에서 키 자체가 제거됨 (k8s 1.25 PSP 삭제 영향)
+  - 남겨도 helm이 무시해 install이 깨지진 않지만 의미 없는 잔재이므로 삭제
+- CRD (monitoring.coreos.com 10종) 갱신 (필수)
+  - helm은 upgrade 시 CRD를 자동 갱신하지 않음
+  - 수동 apply 또는 `crds.upgradeJob.enabled: true` (아래 "CRD 처리" 참고)
+- `prometheus-node-exporter.extraArgs` 갱신 (권장)
+  - 86 기본 필터 정규식에 `run/containerd/.+`, `erofs`가 추가됨
+  - 우리 value의 `--collector.filesystem.*` 정규식을 신버전 기준으로 갱신
+- `prometheus.ingress.ingressClassName`: 주석 → 정식 필드화. ingress 미사용이면 무관
+
+신규 optional 필드(`prometheus.service.enabled`, histogram 관련 `convert/scrape*Histograms`, `prometheusOperator.podDisruptionBudget` 등)는 안전한 default라 건드릴 필요 없음.
+operator의 webhook patch 이미지 출처가 `registry.k8s.io/.../kube-webhook-certgen` → `ghcr.io/jkroepke/kube-webhook-certgen`로 바뀐 건 차트 내부값. 오프라인/사설 레지스트리 환경이면 이미지 pull 경로만 참고.
+
+### pspEnabled 제거
+
+```yaml
+prometheus-node-exporter:
+  rbac:
+    # pspEnabled: false   # 86에서 키 제거됨 → 삭제
+    create: true
+```
+
+### extraArgs 갱신 (권장)
+
+86 기본값에 맞춰 filesystem 필터 정규식 갱신. `run/containerd/.+`(containerd 런타임), `erofs` 추가.
+
+```yaml
+prometheus-node-exporter:
+  extraArgs:
+    - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/containerd/.+|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+    - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|erofs)$
+```
+
+### CRD 처리
+
+prometheus-operator 사용 환경이므로 monitoring.coreos.com CRD 10종(alertmanagerconfigs, alertmanagers, podmonitors, probes, prometheusagents, prometheuses, prometheusrules, scrapeconfigs, servicemonitors, thanosrulers)이 필요.
+
+#### 첫 설치는 자동 (별도 작업 불필요)
+
+차트의 crds 서브차트(`charts/crds/crds/*.yaml`)에 CRD 10종이 helm native `crds/` 디렉토리 방식으로 포함돼 있고, `crds.enabled: true`(기본값)면 helm이 install 시 이를 자동 적용한다. 따라서 신규 클러스터 첫 설치는 CRD 관련 추가 작업이 없다.
+
+#### 업그레이드 때만 수동 갱신 필요 (필수)
+
+helm은 install 때만 native `crds/`를 적용하고, upgrade/rollback 시에는 CRD를 건드리지 않는다. 그래서 버전을 올릴 때는 아래 중 하나로 CRD를 직접 갱신해야 한다.
+
+이 동작은 차트를 어디서 가져오든(repo `prometheus-community/...`, 로컬 `*.tgz` 아카이브, 압축 푼 디렉토리) 동일하다. helm 자체의 의도된 설계이기 때문이다. 즉 최신 CRD가 들어있는 차트 아카이브로 `helm upgrade`를 해도 클러스터의 CRD는 구버전 그대로 남고 자동 반영되지 않는다. tgz를 써도 그 안의 CRD를 따로 꺼내 직접 apply해야 한다.
+
+옵션 두 가지 중 택1:
+
+- 차트 옵션으로 CRD 자동 갱신 (preview 기능)
+  - helm hook으로 busybox(docker.io), kubectl(registry.k8s.io) 이미지를 쓰는 Job을 띄워 차트 내장 CRD를 apply한다.
+  ```yaml
+  crds:
+    upgradeJob:
+      enabled: true
+  ```
+- helm upgrade 전에 수동 apply
+  ```sh
+  # 86.2.2의 operator 버전에 맞춰 CRD 10종 적용
+  for crd in alertmanagerconfigs alertmanagers podmonitors probes prometheusagents prometheuses prometheusrules scrapeconfigs servicemonitors thanosrulers; do
+    kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.91.0/example/prometheus-operator-crd/monitoring.coreos.com_${crd}.yaml
+  done
+  ```
+
+#### 폐쇄망에서 CRD 갱신
+
+위 수동 apply는 `raw.githubusercontent.com`에서 받아오므로 폐쇄망에선 그대로 안 된다. 외부 다운로드 없이 차트 tgz에 내장된 CRD를 그대로 쓰면 된다(버전도 차트와 정확히 일치).
+
+```sh
+# 차트 아카이브에서 crds 서브차트의 CRD 10종을 추출
+tar xzf kube-prometheus-stack-86.2.2.tgz \
+  kube-prometheus-stack/charts/crds/crds
+
+# 추출된 yaml을 그대로 적용
+kubectl apply --server-side -f kube-prometheus-stack/charts/crds/crds/
+```
+
+upgradeJob 방식을 폐쇄망에서 쓰려면 busybox/kubectl 이미지를 사내 레지스트리에 미러링하고 `crds.upgradeJob.image.busybox.registry`, `crds.upgradeJob.image.kubectl.registry`를 사내 레지스트리로 덮어써야 한다.
 
