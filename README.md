@@ -51,20 +51,20 @@ envsubst < central_monitor.yaml | helm install monitor prometheus-community/kube
 
 ```sh
 # Install exporter and prometheus 
-helm install monitor prometheus-community/kube-prometheus-stack --version 69.2.4 -f each_cluster.yaml -n monitor 
+helm install monitor prometheus-community/kube-prometheus-stack --version 82.2.2 -f each_cluster.yaml -n monitor 
 
 # prometheus nodeSelector 지정 예시
-helm upgrade monitor prometheus-community/kube-prometheus-stack --version 69.2.4 -f each_cluster.yaml -n monitor \
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 82.2.2 -f each_cluster.yaml -n monitor \
 --set "prometheus.prometheusSpec.nodeSelector.kr-mum/noderole=kafka" \
 --set "prometheusOperator.nodeSelector.kr-mum/noderole=kafka"
 
 # kube metric 수집 활성화 예시
-helm upgrade monitor prometheus-community/kube-prometheus-stack --version 69.2.4 -f each_cluster.yaml -n monitor \
+helm upgrade monitor prometheus-community/kube-prometheus-stack --version 82.2.2 -f each_cluster.yaml -n monitor \
 --set "kubernetesServiceMonitors.enabled=true" \
 --set "kubeStateMetrics.enabled=true"
 
 # WSL에서 실행 시 추가옵션 (WSL, 도커데탑 등 일부 환경에서 node exporter 실행 실패시에만 사용)
-helm install wsl-prom prometheus-community/kube-prometheus-stack --version 69.2.4 -f each_cluster.yaml \
+helm install wsl-prom prometheus-community/kube-prometheus-stack --version 82.2.2 -f each_cluster.yaml \
 --set "prometheus-node-exporter.hostRootFsMount.enabled=false" \
 -n monitor
 ```
