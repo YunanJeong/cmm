@@ -162,10 +162,12 @@ prometheus-node-exporter:
       enabled: true
   ```
 - helm upgrade 전에 수동 apply
+  - `--server-side` 필수 (CRD 스키마가 커서 client-side는 어노테이션 256KB 한도 초과로 실패)
+  - 업그레이드 시 기존 CRD를 다른 매니저(helm 등)가 소유 → 필드 충돌 경고가 뜨므로 `--force-conflicts`로 소유권을 가져옴
   ```sh
   # 86.2.2의 operator 버전에 맞춰 CRD 10종 적용
   for crd in alertmanagerconfigs alertmanagers podmonitors probes prometheusagents prometheuses prometheusrules scrapeconfigs servicemonitors thanosrulers; do
-    kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.91.0/example/prometheus-operator-crd/monitoring.coreos.com_${crd}.yaml
+    kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.91.0/example/prometheus-operator-crd/monitoring.coreos.com_${crd}.yaml
   done
   ```
 
@@ -176,8 +178,14 @@ prometheus-node-exporter:
   ```sh
   # 차트 아카이브에서 CRD 10종 추출
   tar xzf kube-prometheus-stack-86.2.2.tgz kube-prometheus-stack/charts/crds/crds
-  # 추출된 yaml 적용
-  kubectl apply --server-side -f kube-prometheus-stack/charts/crds/crds/
+  # 추출된 yaml 적용 (for문 불필요, 디렉토리째 apply)
+  kubectl apply --server-side --force-conflicts -f kube-prometheus-stack/charts/crds/crds/
+  ```
+- CRD 경로가 이미 로컬에 있으면 추출 없이 그 디렉토리만 가리키면 됨
+  ```sh
+  # --server-side: CRD 스키마가 커서 client-side는 256KB 한도 초과로 실패
+  # --force-conflicts: 기존 CRD 소유자(helm 등)와의 필드 충돌 무시하고 덮어씀
+  kubectl apply --server-side --force-conflicts -f <crds 디렉토리 경로>/
   ```
 - upgradeJob 방식을 폐쇄망에서 쓰려면: busybox/kubectl 이미지를 사내 레지스트리에 미러링하고 `crds.upgradeJob.image.busybox.registry`, `crds.upgradeJob.image.kubectl.registry`를 사내 레지스트리로 덮어쓰기
 
