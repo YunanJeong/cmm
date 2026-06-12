@@ -1,9 +1,9 @@
 grafana:
   enabled: false
 
-# prometheus-operator용 CRD(monitoring.coreos.com 10종). operator를 쓰는 각 클러스터엔 필수.
-# enabled:true면 첫 install시 차트 내장 CRD가 자동 적용됨.
-# 단, 업그레이드 때는 helm이 CRD를 자동 갱신하지 않으므로 그때만 수동 갱신 필요.
+# prometheus-operator용 CRD(monitoring.coreos.com 10종). 각 클러스터엔 필수.
+# 첫 install은 자동 적용. 버전업(upgrade/재install)시엔 자동 갱신 안 되니 CRD 먼저 apply 후 helm 실행.
+# crd파일은 차트 아카이브 파일 내부에 있음
 crds:
   enabled: true   # default: true
 
