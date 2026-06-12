@@ -1,12 +1,18 @@
 grafana:
   enabled: false
 
+# prometheus-operator용 CRD(monitoring.coreos.com 10종). 각 클러스터엔 필수.
+# 첫 install은 자동 적용. 버전업(upgrade/재install)시엔 자동 갱신 안 되니 CRD 먼저 apply 후 helm 실행.
+# crd파일은 차트 아카이브 파일 내부에 있음
+crds:
+  enabled: true   # default: true
+
 # 기본 탑재된 Alert 대시보드가 prometheus에 저장된 alertmanager지표를 활용함. # false해도 무방.
 # grafana 자체알람기능 사용시, alertmanager와 무관하게 prometheus의 일반 지표를 활용하는 것이 더 일반적
 alertmanager:
   enabled: true
 
-################################### 
+###################################
 #  Each Cluster: Monitoring Target
 ###################################
 ## Deploy node exporter as a daemonset to all nodes
@@ -52,7 +58,7 @@ prometheus:
       #   static_configs:
       #     - targets:
       #       - test-kafka-jmx-metrics.default.svc.cluster.local:5556
-    
+
     ## If true, a nil or {} value for prometheus.prometheusSpec.serviceMonitorSelector will cause the
     ## prometheus resource to be created with selectors based on values in the helm deployment,
     ## which will also match the servicemonitors created
@@ -90,9 +96,10 @@ prometheus-node-exporter:
     ##
     jobLabel: node-exporter
   releaseLabel: true
+  # filesystem collector 제외 필터 (불필요한 가상/임시 마운트·파일시스템 메트릭 제거)
   extraArgs:
-    - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
-    - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+    - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/containerd/.+|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+    - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|erofs)$
   service:
     portName: http-metrics
   prometheus:
@@ -153,10 +160,6 @@ prometheus-node-exporter:
       #   targetLabel: nodename
       #   replacement: $1
       #   action: replace
-  rbac:
-    ## If true, create PSPs for node-exporter
-    ##
-    pspEnabled: false
 
 
 prometheusOperator:
@@ -197,4 +200,3 @@ kubeProxy:                  ## Component scraping kube proxy
 # 쿠버네티스 리소스(Pod,Service,...)의 상태 메트릭 수집 여부
 kubeStateMetrics:       ## Component scraping kube state metrics
   enabled: false        # default: true
-
