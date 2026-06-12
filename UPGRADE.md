@@ -108,7 +108,6 @@ grafana는 each cluster에서 꺼두므로(`grafana.enabled: false`) grafana 서
 - `prometheus-node-exporter.extraArgs` 갱신 (권장)
   - 86 기본 필터 정규식에 `run/containerd/.+`, `erofs`가 추가됨
   - 우리 value의 `--collector.filesystem.*` 정규식을 신버전 기준으로 갱신
-- `prometheus.ingress.ingressClassName`: 주석 → 정식 필드화. ingress 미사용이면 무관
 
 신규 optional 필드(`prometheus.service.enabled`, histogram 관련 `convert/scrape*Histograms`, `prometheusOperator.podDisruptionBudget` 등)는 안전한 default라 건드릴 필요 없음.
 operator의 webhook patch 이미지 출처가 `registry.k8s.io/.../kube-webhook-certgen` → `ghcr.io/jkroepke/kube-webhook-certgen`로 바뀐 건 차트 내부값. 오프라인/사설 레지스트리 환경이면 이미지 pull 경로만 참고.
