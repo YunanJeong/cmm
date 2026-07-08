@@ -38,6 +38,11 @@ prometheus:
   service:
     type: LoadBalancer
   prometheusSpec:
+    ## global scrapeInterval, scrapeTimeout 설정
+    ## curl -s http://localhost:9090/api/v1/targets | grep scrape_ 으로 설정반영 확인가능
+    # scrapeInterval: 90s # global
+    # scrapeTimeout: 70s  # global # Interval보다 작게 설정
+    
     nodeSelector: {}
     retention: 7d
     additionalScrapeConfigs: []
